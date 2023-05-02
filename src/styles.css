@@ -4,8 +4,8 @@
   }
   
   body {
-    background: #333;
-    color: hsl(200, 100%, 90%);
+    background: brown;
+    color: lightgray;
     max-width: 400px;
     padding: 1rem;
     margin: 0 auto;
@@ -24,9 +24,9 @@
   }
   
   .btn {
-    background: hsl(200, 100%, 50%, 0.1);
-    border: 1px solid hsl(200, 100%, 50%);
-    color: hsl(200, 100%, 50%);
+    background: darkgray;
+    border: 1px solid dimgray;
+    color: hsl(0, 0%, 100%);
     padding: 0.25em 0.5em;
     border-radius: 0.25em;
     cursor: pointer;
@@ -138,3 +138,5 @@
   .list li:has(input:checked) label:hover::before {
     background: hsl(200, 100%, 30%);
   }
+
+  
