@@ -2,38 +2,26 @@ import "./styles.css"
 
 export default function App(){
 
-  const [amount, setAmount] = useState(0)
-
-  function handleSubmit(e){
-    e.preventDefault();
-  }
-
   return (
     <>
       <h1>layla - Spinwheel</h1>
       <div>
-        <form onSubmit={handleSubmit}>
-          <input type="number" min="1" className="amount" onChange={e => setAmount(e.target.value)}/>
-          <button className="btn">Add</button>
-        </form> 
-        <ul>
-          {
-            amount.map(amo => {
-              return(
-                <li>
-                  <label htmlFor="eintrag">
-                    Name:
-                  </label>
-                  <input type="text" id="eintrag" className="eintrag"/>
-                </li>
-              )
-            })
 
-          }
-        </ul>
         
 
 
+      </div>
+      {/*Wheel*/}
+      <div class="container">
+        <div class="spinBtn">Spin</div>
+        <div class="wheel">
+          <div class="wheelinput" style="--i:0;"><span>100</span></div>
+          <div class="wheelinput" style="--i:1;"><span>1</span></div>
+          <div class="wheelinput" style="--i:2;"><span>50</span></div>
+          <div class="wheelinput" style="--i:3;"><span>20</span></div>
+          <div class="wheelinput" style="--i:4;"><span>0</span></div>
+        </div>
+        
       </div>
     </>
   )
