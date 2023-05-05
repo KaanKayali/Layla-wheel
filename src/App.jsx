@@ -117,7 +117,7 @@ export default function App() {
           <tbody>
           </tbody>
         </table>
-
+        </div>
     <div className="App">
       <div>
         {/*Wheel*/}
@@ -136,6 +136,7 @@ export default function App() {
         />
       </div>
     </div>
+    </>
   );
 }
 
