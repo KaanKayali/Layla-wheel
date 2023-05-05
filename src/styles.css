@@ -129,14 +129,14 @@
   
   .list li:has(input:checked) label::before {
     content: "✔";
-    background: hsl(200, 100%, 40%);
+    background: #6e390d;
     color: hsl(200, 100%, 90%);
     font-size: 0.75rem;
     font-weight: bold;
   }
   
   .list li:has(input:checked) label:hover::before {
-    background: hsl(200, 100%, 30%);
+    background: #6e390d;
   }
 
-  
+

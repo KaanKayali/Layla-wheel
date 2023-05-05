@@ -1,40 +1,38 @@
-import "./styles.css"
+import "./styles.css";
+import WheelComponent from "react-wheel-of-prizes";
 
-export default function App(){
+export default function App() {
 
-  const [amount, setAmount] = useState(0)
-
-  function handleSubmit(e){
-    e.preventDefault();
-  }
+  /*Wheel*/
+  const segments = [
+    "casper",
+    "kaan",
+    ""
+  ];
+  const segColors = ["saddlebrown", "darkred", "grey"];
+  const onFinished = (winner) => {
+    console.log(winner);
+  };
 
   return (
-    <>
-      <h1>layla - Spinwheel</h1>
+    <div className="App">
       <div>
-        <form onSubmit={handleSubmit}>
-          <input type="number" min="1" className="amount" onChange={e => setAmount(e.target.value)}/>
-          <button className="btn">Add</button>
-        </form> 
-        <ul>
-          {
-            amount.map(amo => {
-              return(
-                <li>
-                  <label htmlFor="eintrag">
-                    Name:
-                  </label>
-                  <input type="text" id="eintrag" className="eintrag"/>
-                </li>
-              )
-            })
-
-          }
-        </ul>
-        
-
-
+        {/*Wheel*/}
+        <WheelComponent
+          segments={segments}
+          segColors={segColors}
+          onFinished={(winner) => onFinished(winner)}
+          primaryColor="black"
+          contrastColor="lightgrey"
+          buttonText="Layla"
+          isOnlyOnce={false}
+          size={190}
+          upDuration={500}
+          downDuration={600}
+          fontFamily="Times New Roman"
+        />
       </div>
-    </>
-  )
+    </div>
+  );
 }
+
