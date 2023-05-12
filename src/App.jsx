@@ -52,8 +52,11 @@ export default function App() {
 
     // Get Array lenght
     var arraycount = segments.length;
+    const pelement = document.getElementById('entriescounter').innerHTML = "Current Count of Segments: " + arraycount;
     arraycount = arraycount/2;
     var i = 1;
+
+    $( "#here" ).load(window.location.href + " #here" );
 
     while (i < arraycount) 
     {
@@ -172,7 +175,8 @@ export default function App() {
                   
             {/* Show last Results */}
             <input type="text" id="delinput" className="entryInput" placeholder="Entry that you want to delete"></input> <br />
-            <button className="btn" onClick={removeEntryFromArray}>Remove Entry</button>
+            <button className="btn" onClick={removeEntryFromArray}>Remove Entry</button> <br />
+            <p id="entriescounter"></p>
         </div>
       </div>
     </div>  

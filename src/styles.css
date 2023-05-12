@@ -108,6 +108,10 @@ tr:first-child {
   float: left;
   padding: 20px;
 }  
+#entriescounter{
+  font-size: small;
+  color: white;
+}
  
 
 
