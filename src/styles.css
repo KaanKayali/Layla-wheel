@@ -1,28 +1,64 @@
 * {
-    font-family: Arial, Helvetica, sans-serif;
-    box-sizing: border-box;
-  }
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
   
-  body {
-    background: brown;
-    color: lightgray;
-    margin: 0 auto;
-  }
+body {
+  background-image: url("https://media.discordapp.net/attachments/985795697783762965/985865559784702012/UnbenanRWFWWnt.png?width=856&height=595");
+  color: lightgray;
+  margin: 0 auto;
+}
  
-  .btn {
-    background: darkgray;
-    border: 1px solid dimgray;
-    color: hsl(0, 0%, 100%);
-    padding: 0.25em 0.5em;
-    border-radius: 0.25em;
-    outline: none;
-  }
-  
+.btn {
+  background: darkgray;
+  border: 1px solid rgb(72, 70, 70);
+  color: hsl(0, 3%, 17%);
+  padding: 0.25em 0.5em;
+  border-radius: 0.25em;
+  outline: none;
+}
+header{
+  display:flex;
+  margin: 0;
+  justify-content: space-between;
+  background-color: rgb(0, 0, 0);
+  top:0;
+  width:100%;
+  z-index: 1;
+}
+
+img{
+  height:55px;
+  margin: 20px;
+  margin-left: 45%;
+  margin-right: 45%;
+}
 
 
-/* Input Entires */
+
+/* Wheel Editor*/
 #entrylistForm{
-  max-width: 300px;
+  width: 150px;
+}
+input{
+  width: 300px;
+}
+.InputDiv{
+  border-color: black;
+  padding: 15px;
+  border-width: 2px;
+  border-style: solid;
+  background: rgba(45, 45, 45, .6)
+}
+#pastResults{
+  background-color: black;
+  border-collapse: collapse;
+  width: 300px;
+}
+tr:nth-child(even) {background-color: darkred;}
+tr:first-child {
+  font-style: italic;
+  font-weight: bolder;
 }
 
  
