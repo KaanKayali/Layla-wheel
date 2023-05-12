@@ -2,23 +2,28 @@ import "./styles.css";
 import WheelComponent from "react-wheel-of-prizes";
 
 export default function App() {
-
-  /*Wheel*/
-  const segments = [
-    "casper",
-    "kaan",
-    ""
-  ];
-  const segColors = ["saddlebrown", "darkred", "grey"];
+  const entries = [];
+  const segments = ["casper", "kaan"];
+  const segColors = ["saddlebrown", "darkred", "saddlebrown", "darkred","saddlebrown", "darkred","saddlebrown", "darkred",];
   const onFinished = (winner) => {
-    console.log(winner);
+    addEntryForLocalSave(winner)
   };
-    const entries = [];
 
   window.onload = function() {
     loadOldWins();
   };
-  
+
+  function getFormattedDate(stringDate){
+    const currentDate = new Date(stringDate)
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear();
+    const formattedDate = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;
+    
+    return formattedDate;
+    
+  }
+
   function newInputBox(){
     const form = document.getElementById("entrylistForm");
     const newInput = document.createElement("input");
@@ -39,22 +44,24 @@ export default function App() {
   function addEntries(){
     const form = document.getElementById("entrylistForm");
     const inputs = form.querySelectorAll("input");
-    const spinnerValues = [];
 
     inputs.forEach(input => {
-      spinnerValues.push(input.value);
-      console.log(spinnerValues);
+      segments.push(input.value);
+      console.log(segments);
     });
   }
 
   function loadOldWins(){
     const storedEntries = JSON.parse(localStorage.getItem('Items'));
     const table = document.getElementById('pastResults');
-
     table.innerHTML = "";
 
-
-    console.log(storedEntries);
+    //Insert Header
+    const row = table.insertRow();
+    const InfoCell = row.insertCell();
+    InfoCell.innerHTML = "-";
+    const HeadCell = row.insertCell();
+    HeadCell.innerHTML = "Last Picks";
 
     //Fill Table
     storedEntries.forEach((entry, index) => {
@@ -66,8 +73,7 @@ export default function App() {
       entryCell.innerHTML = entry.content;
     
       const dateCell = row.insertCell();
-      dateCell.innerHTML = entry.date;
-
+      dateCell.innerHTML = getFormattedDate(entry.date);
     });
   }
 
@@ -92,32 +98,33 @@ export default function App() {
 
   return (
     <>
-      <h1>Layla - Spinwheel</h1>  
+      <header>
+            <img src="https://cdn.discordapp.com/attachments/985795697783762965/985879958729662494/Unbenannt.png"/>
+      </header> 
+      <div className="InputDiv">
+          {/* Show last Results */}
+          <table id="pastResults">
+            <thead>
+              <tr>
+                <th>Index</th>
+                <th>Entry</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
 
-      {/* Input Field in Array*/}
-      <div>
+            </tbody>
+          </table>
+
+          {/* Input Field in Array*/}
           <form id="entrylistForm">
-            <input type="text" id="trigger"className="entryInput"/>
+            <input type="text" className="entryInput"/>
+            <input type="text" className="entryInput"/>
           </form>
           <button className="btn" onClick={newInputBox}>+</button>
           <button className="btn" onClick={delInputBox}>-</button>
           <button className="btn" onClick={addEntries}>Add all Entries</button>
       </div>
-
-      {/* Show last Results */}
-      <div className="pastResultsDiv">
-        <table id="pastResults">
-          <thead>
-            <tr>
-              <th>Index</th>
-              <th>Entry</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-        </div>
     <div className="App">
       <div>
         {/*Wheel*/}
