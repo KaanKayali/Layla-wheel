@@ -34,6 +34,47 @@ img{
   margin-right: 45%;
 }
 
+.wrapper {
+  margin-right: auto; /* 1 */
+  margin-left:  auto; /* 1 */
+
+  max-width: 960px; /* 2 */
+
+  padding-right: 10px; /* 3 */
+  padding-left:  10px; /* 3 */
+}
+canvas{
+  cursor: pointer;
+}
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: black; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ef7b00; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: orange; 
+}
+
+
+
+/* Mark Text */
+
+* ::selection {
+  color: #1f1f1f;
+  background: #ef7b00;
+}
+
+
 
 
 /* Wheel Editor*/
@@ -48,8 +89,10 @@ input{
   padding: 15px;
   border-width: 2px;
   border-style: solid;
-  background: rgba(45, 45, 45, .6)
+  background: rgba(45, 45, 45, .6);
+  float: left ;
 }
+
 #pastResults{
   background-color: black;
   border-collapse: collapse;
@@ -60,7 +103,15 @@ tr:first-child {
   font-style: italic;
   font-weight: bolder;
 }
-
+.float-child {
+  width: 50%;
+  float: left;
+  padding: 20px;
+}  
+#entriescounter{
+  font-size: small;
+  color: white;
+}
  
 
 

@@ -4,7 +4,7 @@ import WheelComponent from "react-wheel-of-prizes";
 export default function App() {
   const entries = [];
   const segments = ["casper", "kaan"];
-  const segColors = ["saddlebrown", "darkred", "saddlebrown", "darkred","saddlebrown", "darkred","saddlebrown", "darkred",];
+  const segColors = ["saddlebrown", "darkred"];
   const onFinished = (winner) => {
     addEntryForLocalSave(winner)
   };
@@ -49,6 +49,20 @@ export default function App() {
       segments.push(input.value);
       console.log(segments);
     });
+
+    // Get Array lenght
+    var arraycount = segments.length;
+    const pelement = document.getElementById('entriescounter').innerHTML = "Current Count of Segments: " + arraycount;
+    arraycount = arraycount/2;
+    var i = 1;
+
+    $( "#here" ).load(window.location.href + " #here" );
+
+    while (i < arraycount) 
+    {
+      i++
+      segColors.push("saddlebrown", "darkred")
+    }
   }
 
   function loadOldWins(){
@@ -95,13 +109,49 @@ export default function App() {
     //Refreshes the Table
     loadOldWins();
   } 
+  function removeEntryFromArray(){
+    const form = document.getElementById("delinput");
+    const segmentName = form.value;
+    
+    // Find the index of the segment to delete
+    const indexToDelete = segments.findIndex(segment => segment === segmentName);
+    
+    // Delete the segment at the found index
+    if (indexToDelete !== -1) {
+      segments.splice(indexToDelete, 1);
+    }
+    console.log(segments);
+    
+  }
 
   return (
     <>
       <header>
             <img src="https://cdn.discordapp.com/attachments/985795697783762965/985879958729662494/Unbenannt.png"/>
       </header> 
-      <div className="InputDiv">
+      <div class="float-container">
+
+      <div class="float-child">
+        <div className="App">
+          <div>
+            {/*Wheel*/}
+            <WheelComponent
+              segments={segments}
+              segColors={segColors}
+              onFinished={(winner) => onFinished(winner)}
+              primaryColor="black"
+              contrastColor="lightgrey"
+              buttonText="Layla"
+              isOnlyOnce={false}
+              size={190}
+              upDuration={500}
+              downDuration={600}
+              fontFamily="Times New Roman"/>
+          </div>
+        </div>
+      </div>
+      <div class="float-child">
+        <div className="InputDiv">
           {/* Show last Results */}
           <table id="pastResults">
             <thead>
@@ -112,37 +162,24 @@ export default function App() {
               </tr>
             </thead>
             <tbody>
-
             </tbody>
           </table>
-
-          {/* Input Field in Array*/}
-          <form id="entrylistForm">
-            <input type="text" className="entryInput"/>
-            <input type="text" className="entryInput"/>
-          </form>
-          <button className="btn" onClick={newInputBox}>+</button>
-          <button className="btn" onClick={delInputBox}>-</button>
-          <button className="btn" onClick={addEntries}>Add all Entries</button>
+            {/* Input Field in Array*/}
+            <form id="entrylistForm">
+              <input type="text" className="entryInput"/>
+              <input type="text" className="entryInput"/>
+            </form>
+            <button className="btn" onClick={newInputBox}>+</button>
+            <button className="btn" onClick={delInputBox}>-</button>
+            <button className="btn" onClick={addEntries}>Add all Entries</button> <br />
+                  
+            {/* Show last Results */}
+            <input type="text" id="delinput" className="entryInput" placeholder="Entry that you want to delete"></input> <br />
+            <button className="btn" onClick={removeEntryFromArray}>Remove Entry</button> <br />
+            <p id="entriescounter"></p>
+        </div>
       </div>
-    <div className="App">
-      <div>
-        {/*Wheel*/}
-        <WheelComponent
-          segments={segments}
-          segColors={segColors}
-          onFinished={(winner) => onFinished(winner)}
-          primaryColor="black"
-          contrastColor="lightgrey"
-          buttonText="Layla"
-          isOnlyOnce={false}
-          size={190}
-          upDuration={500}
-          downDuration={600}
-          fontFamily="Times New Roman"
-        />
-      </div>
-    </div>
+    </div>  
     </>
   );
 }
