@@ -1,18 +1,6 @@
-export function newInputBox(){
-    const form = document.getElementById("entrylistForm");
-    const newInput = document.createElement("input");
-    newInput.type = "text";
-    newInput.name = "newInput";
-    form.appendChild(newInput);
-  }
-
-export function delInputBox(){
-    const form = document.getElementById('entrylistForm');
-    const inputs = form.querySelectorAll('input');
-    const lastInput = inputs[inputs.length - 1];
-    if (inputs.length > 1){
-      form.removeChild(lastInput);
-    }
+export function processInput(input) {
+  const entries = input.split(",").map(entry => entry.trim());
+  return entries;
 }
 export function getFormattedDate(stringDate){
     const currentDate = new Date(stringDate)
@@ -40,6 +28,7 @@ export function changeWheelDesign(var1, var2){
   //Marks the Selected Design
   const selectedDesign = document.getElementById(var1 +"/"+ var2);
   selectedDesign.style.border = '2px solid orange';
+  location. reload();
 }
 export function getColorCode(){
   // Retrieve the stored data from localStorage
@@ -54,4 +43,11 @@ export function getColorCode(){
   selectedDesign.style.border = '2px solid orange';
 
   return { colour1: colorCode1, colour2: colorCode2 };
+}
+export function sliderchanged(){
+  const counter = document.getElementById("UptimeID");
+  var range = document.getElementById("uptimeSlider").value;
+  counter.innerHTML = range;
+  console.log(range);
+  
 }
