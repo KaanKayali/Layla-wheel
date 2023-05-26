@@ -33,15 +33,22 @@ export function changeWheelDesign(var1, var2){
 export function getColorCode(){
   // Retrieve the stored data from localStorage
   var storedColor = localStorage.getItem('ColorDesign');
-  var colorObj = JSON.parse(storedColor);
-  var colorCode1 = colorObj.colour1;
-  var colorCode2 = colorObj.colour2;
+  var colorCode1;
+  var colorCode2;
 
-  //Marks the Selected Design
-  var colorCode = colorObj.colour1 + "/" + colorObj.colour2;
-  const selectedDesign = document.getElementById(colorCode);
-  selectedDesign.style.border = '2px solid orange';
-
+  if(storedColor){
+    var colorObj = JSON.parse(storedColor);
+    colorCode1 = colorObj.colour1;
+    colorCode2 = colorObj.colour2;
+  
+    //Marks the Selected Design
+    var colorCode = colorObj.colour1 + "/" + colorObj.colour2;
+    const selectedDesign = document.getElementById(colorCode);
+    selectedDesign.style.border = '2px solid orange';  
+  }else{
+    colorCode1 = "darkred";
+    colorCode2 = "saddlebrown";
+  }  
   return { colour1: colorCode1, colour2: colorCode2 };
 }
 export function sliderchanged(){
