@@ -114,7 +114,8 @@ export default function App() {
   
     //Refreshes the Table
     loadOldWins();
-  } 
+  }
+e  
   function removeEntryFromArray(){
     const form = document.getElementById("delinput");
     const segmentName = form.value;
