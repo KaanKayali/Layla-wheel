@@ -201,9 +201,7 @@ export default function App() {
       </div>
     </div>
       
-
-      <div class="float-container">
-      <div class="float-child">
+    <div class="float-child">
         <div className="App">
           <div>
             {/*Wheel*/}
@@ -224,6 +222,8 @@ export default function App() {
           </div>
         </div>
       </div>
+      <div class="float-container">
+      
       <div class="float-child">
         <div className="InputDiv">
           {/* Show last Results */}
@@ -271,6 +271,7 @@ export default function App() {
         </div>
         {showWinner && (<ShowWinner winner={winnerName} onClose={closeWinnerPopup}/>)}
       </div>
+      
     </div>  
     </>
   ); 

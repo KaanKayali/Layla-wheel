@@ -13,8 +13,56 @@
     max-height: 70px;
   }
 
+  input{
+    margin-top: 20px;
+    width: 975px;
+    height: 65px;
+  }
+
+  .slider {
+    height: 30px;
+  }
+
+  .slider::-webkit-slider-thumb {
+    width: 40px;
+    height: 40px;
+  }
+
+  *{
+    font-size: 35px;
+  }
+
+
+  .popup {
+    width: 800px;
+    height: 400px;
+  }
+
+  #closePopUpBtn{
+    width: 50px;
+    height: 100px;
+    font-size: 40px;
+  }
+
+  img{
+    height: 100px;
+  }
+
+  .designSelect{
+    max-width:100px;
+    max-height:100px;
+  }
+  
+  td{
+    height: 40px;
+  }
+
+  #pastResults{
+    width: 100%;
+  }
+
   .float-child {
-    width: 50%;
+    width: 100%;
     float: center;
     padding: 20px;
   }  
@@ -29,11 +77,42 @@
     max-height:40px;
   }
 
+  input{
+    width: 300px;
+  }
+
+  .slider {
+    height: 15px;
+  }
+
+  .slider::-webkit-slider-thumb {
+    width: 25px;
+    height: 25px;
+  }
+
+  img{
+    height: 60px;
+  }
+
+  .popup {
+    width: 400px;
+    height: 200px;
+  }
+
+  .designSelect{
+    max-width:40px;
+    max-height:40px;
+  }
+
   .float-child {
     width: 50%;
     float: left;
     padding: 20px;
   }  
+
+  #pastResults{
+    width: 100%;
+  }
   
 }
 
@@ -72,7 +151,6 @@ nav{
 }
 
 img{
-  height: 60px;
   margin: 20px;
   margin-left: auto;
   margin-right: auto;
@@ -108,9 +186,7 @@ canvas{
 #entrylistForm{
   width: 150px;
 }
-input{
-  width: 300px;
-}
+
 .InputDiv{
   border-color: black;
   padding: 15px;
@@ -122,13 +198,15 @@ input{
 #pastResults{
   background-color: black;
   border-collapse: collapse;
-  width: 300px;
+  
+  
 }
 tr:nth-child(even) {background-color: darkred;}
 tr:first-child {
   font-style: italic;
   font-weight: bolder;
 }
+
 
 #entriescounter{
   font-size: small;
@@ -137,7 +215,6 @@ tr:first-child {
 .slider {
   -webkit-appearance: none;
   width: 100%;
-  height: 15px;
   border-radius: 5px;  
   background: #d3d3d3;
   outline: none;
@@ -148,8 +225,6 @@ tr:first-child {
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 25px;
-  height: 25px;
   border-radius: 50%; 
   background: rgb(255, 141, 2);
   cursor: pointer;
@@ -169,8 +244,6 @@ tr:first-child {
 }
 .designSelect{
   display: block;
-  max-width:40px;
-  max-height:40px;
   width: auto;
   height: auto;
   cursor: pointer;
@@ -211,8 +284,6 @@ tr:first-child {
   transform: translate(-50%, -50%);
   background-image: url("src/Images/WoodTexture.png");
   box-shadow: 0 0 10px rgb(255, 111, 0);
-  width: 400px;
-  height: 200px;
   animation-name: flyIn;
   animation-duration: 0.5s;
   animation-timing-function: ease-out;
