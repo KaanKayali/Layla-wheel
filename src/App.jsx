@@ -183,8 +183,9 @@ export default function App() {
 
   return (
     <>
+    <div id="nav">
       <header>
-            <img src="src/Images/laylalogo.png" onClick={() => languageChange('eatLanguage')} id="eatLanguage"/>
+          <img src="src/Images/laylalogo.png" onClick={() => languageChange('eatLanguage')} id="eatLanguage"/>
       </header> 
       <div id="languageDiv">
           {/*Language Change*/}
@@ -207,9 +208,9 @@ export default function App() {
             <img src="src/Images/Flags/Serbia-Flag.png" alt="Image of the Serbian Flag" onClick={() => languageChange('serbian')} className="langSelect" id="serbian"/>
           </div>
       </div>
-
-      <div class="float-container">
-      <div class="float-child">
+    </div>
+      
+    <div class="float-child">
         <div className="App">
           <div>
             {/*Wheel*/}
@@ -230,6 +231,8 @@ export default function App() {
           </div>
         </div>
       </div>
+      <div class="float-container">
+      
       <div class="float-child">
         <div className="InputDiv">
           {/* Show last Results */}
@@ -290,6 +293,7 @@ export default function App() {
         </div>
         {showWinner && (<ShowWinner winner={winnerName} onClose={closeWinnerPopup}/>)}
       </div>
+      
     </div>  
     </>
   ); 
