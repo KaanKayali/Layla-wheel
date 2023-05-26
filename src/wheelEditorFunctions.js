@@ -55,6 +55,7 @@ export function sliderchanged(){
   const counter = document.getElementById("UptimeID");
   var range = document.getElementById("uptimeSlider").value;
   localStorage.setItem('UpDuration', range);
+  location.reload();
 }
 export function setSlider(){
   var range = document.getElementById("uptimeSlider");
@@ -64,6 +65,20 @@ export function setSlider(){
     range.value = localStorage.getItem('UpDuration');
     localStorage.setItem('UpDuration', range.value);
   }else{
-    range.value = 100;
+    range.value = 200;
   }  
 }
+export function loadoldsegments(){
+  var storedSegments = JSON.parse(localStorage.getItem('Segments'));
+  var newSegments= [];
+  if(storedSegments){
+    newSegments.push(...storedSegments);
+
+    // Remove entries called "Example 1" and "Example 2"
+    newSegments = newSegments.filter(segment => segment !== "Example 1" && segment !== "Example 2");
+  }else{
+    newSegments.push("Example 1", "Example 2");
+  }  
+  return newSegments;
+}
+
