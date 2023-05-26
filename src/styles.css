@@ -1,6 +1,7 @@
 * {
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
+  scroll-behavior:smooth;
 } 
 body {
   background-image: url("src/Images/WoodTexture.png");
@@ -15,7 +16,6 @@ body {
   border-radius: 0.25em;
   outline: none;
   cursor: pointer;
-  
 }
 header{
   display:flex;
@@ -118,6 +118,14 @@ tr:first-child {
 }
 #entryCell{
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.time{
+  color: darkgrey;
+  font-style: italic;
+  display: inline-block;
+}
+#min{
+  float: right;
 }
 
 

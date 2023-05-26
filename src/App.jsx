@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import WheelComponent from "react-wheel-of-prizes";
 import translations from "./translations.json";
 import ShowWinner from "./winner.jsx";
-import {getFormattedDate,changeWheelDesign,getColorCode,sliderchanged,processInput,setSlider} from "./wheelEditorFunctions.js";
+import {getFormattedDate,changeWheelDesign,getColorCode,sliderchanged,processInput,setSlider,loadoldsegments} from "./wheelEditorFunctions.js";
 
-const segments = ["1", "2"];
+const segments = [];
 const segColors = ["saddlebrown", "darkred"];
 export default function App() {
   const [showWinner, setShowWinner] = useState(false);
@@ -23,12 +23,20 @@ export default function App() {
 
   const closeWinnerPopup = () => { setShowWinner(false); };
   window.onload = function() { loadOldWins();
+    //Load old Segments or load examples
+    var newsegments = loadoldsegments();
+    segments.push(...newsegments);
     //Put the right color in the array
     segColors.length = 0;
     var { colour1, colour2 } = getColorCode();
-    segColors.push(colour1, colour2)
-    setSlider();
+    for (let i = 0; i < segments.length/2; i++) {
+      segColors.push(colour1, colour2)
+    }
     setRefreshWheel(!refreshWheel);
+    setSlider();
+
+
+    
   };
 
   function addEntries(){
@@ -48,6 +56,7 @@ export default function App() {
       var { colour1, colour2 } = getColorCode();
       segColors.push(colour1, colour2);
     }
+    localStorage.setItem('Segments', JSON.stringify(segments));
     setLanguage();
     setRefreshWheel(!refreshWheel);
   }
@@ -77,7 +86,6 @@ export default function App() {
         dateCell.innerHTML = getFormattedDate(entry.date);
       });
     }else{
-      alert('Name is not found');
     }
     setLanguage();
   }
@@ -123,6 +131,7 @@ export default function App() {
       setLanguage();
       alert(alertNotEnoughSegments);
     }
+    localStorage.setItem('Segments', JSON.stringify(segments));
     document.getElementById("delinput").value = "";
     setRefreshWheel(!refreshWheel);
   }
@@ -209,7 +218,7 @@ export default function App() {
               segColors={segColors}
               onFinished={(winner) => onFinished(winner)}
               primaryColor="black"
-              contrastColor="lightgrey"
+              contrastColor="white"
               buttonText="Layla"
               isOnlyOnce={false}
               size={190}
@@ -248,7 +257,8 @@ export default function App() {
 
             {/* Range */}
             <p id="UptimeID"></p>
-            <input type="range" min="100" max="60000" class="slider" id="uptimeSlider" defaultValue={100} onChange={sliderchanged}/>
+            <input type="range" min="100" max="60000" class="slider" id="uptimeSlider" defaultValue={200} onChange={sliderchanged}/>
+            <p className="time">1s</p><p className="time" id="min">1min</p>
             <br /><br />
 
             {/* Wheel Designs */}
@@ -264,6 +274,18 @@ export default function App() {
             </div>
             <div class="designcolumn">
               <img src="src/Images/WheelDesigns/darkred_gray.png" alt="Design 4" onClick={() => changeWheelDesign("darkred","gray")} className="designSelect" id="darkred/gray"/>
+            </div>
+            <div class="designcolumn">
+              <img src="src/Images/WheelDesigns/brown_black.png" alt="Design 5" onClick={() => changeWheelDesign("brown","black")} className="designSelect" id="brown/black"/>
+            </div>
+            <div class="designcolumn">
+              <img src="src/Images/WheelDesigns/orange_black.png" alt="Design 6" onClick={() => changeWheelDesign("orange","black")} className="designSelect" id="orange/black"/>
+            </div>
+            <div class="designcolumn">
+              <img src="src/Images/WheelDesigns/yellow_black.png" alt="Design 7" onClick={() => changeWheelDesign("yellow","black")} className="designSelect" id="yellow/black"/>
+            </div>
+            <div class="designcolumn">
+              <img src="src/Images/WheelDesigns/magenta_black.png" alt="Design 8" onClick={() => changeWheelDesign("magenta","black")} className="designSelect" id="magenta/black"/>
             </div>
         </div>
         {showWinner && (<ShowWinner winner={winnerName} onClose={closeWinnerPopup}/>)}
