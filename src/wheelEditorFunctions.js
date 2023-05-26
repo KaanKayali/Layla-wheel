@@ -28,7 +28,7 @@ export function changeWheelDesign(var1, var2){
   //Marks the Selected Design
   const selectedDesign = document.getElementById(var1 +"/"+ var2);
   selectedDesign.style.border = '2px solid orange';
-  location. reload();
+  location.reload();
 }
 export function getColorCode(){
   // Retrieve the stored data from localStorage
@@ -54,7 +54,16 @@ export function getColorCode(){
 export function sliderchanged(){
   const counter = document.getElementById("UptimeID");
   var range = document.getElementById("uptimeSlider").value;
-  counter.innerHTML = range;
-  console.log(range);
-  
+  localStorage.setItem('UpDuration', range);
+}
+export function setSlider(){
+  var range = document.getElementById("uptimeSlider");
+  const x = localStorage.getItem('UpDuration');
+
+  if(x){
+    range.value = localStorage.getItem('UpDuration');
+    localStorage.setItem('UpDuration', range.value);
+  }else{
+    range.value = 100;
+  }  
 }

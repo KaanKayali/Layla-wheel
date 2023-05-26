@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import WheelComponent from "react-wheel-of-prizes";
 import translations from "./translations.json";
 import ShowWinner from "./winner.jsx";
-import {getFormattedDate,changeWheelDesign,getColorCode,sliderchanged,processInput} from "./wheelEditorFunctions.js";
+import {getFormattedDate,changeWheelDesign,getColorCode,sliderchanged,processInput,setSlider} from "./wheelEditorFunctions.js";
 
 const segments = ["1", "2"];
 const segColors = ["saddlebrown", "darkred"];
@@ -27,6 +27,7 @@ export default function App() {
     segColors.length = 0;
     var { colour1, colour2 } = getColorCode();
     segColors.push(colour1, colour2)
+    setSlider();
     setRefreshWheel(!refreshWheel);
   };
 
@@ -212,8 +213,8 @@ export default function App() {
               buttonText="Layla"
               isOnlyOnce={false}
               size={190}
-              upDuration={600}
-              downDuration={600}
+              upDuration={localStorage.getItem('UpDuration') / segments.length}
+              downDuration={localStorage.getItem('UpDuration') / segments.length}
               fontFamily="Times New Roman"
               key={refreshWheel ? 'refresh' : 'no-refresh'}
               />
@@ -247,7 +248,7 @@ export default function App() {
 
             {/* Range */}
             <p id="UptimeID"></p>
-            <input type="range" min="1" max="10000" class="slider" id="uptimeSlider" defaultValue={1} onChange={sliderchanged}/>
+            <input type="range" min="100" max="60000" class="slider" id="uptimeSlider" defaultValue={100} onChange={sliderchanged}/>
             <br /><br />
 
             {/* Wheel Designs */}
