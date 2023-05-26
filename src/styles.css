@@ -2,6 +2,46 @@
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 } 
+
+/*Smallscreens*/
+@media screen and (max-width: 1000px){
+  html{
+    width: 1050px;
+  }
+  .langSelect{
+    max-width: 250px;
+    max-height: 70px;
+  }
+
+  .float-child {
+    width: 50%;
+    float: center;
+    padding: 20px;
+  }  
+}
+/*Big Screens*/
+@media screen and (min-width: 1000px){
+  html{
+    width: 100%;
+  }
+  .langSelect{
+    max-width: 50px;
+    max-height:40px;
+  }
+
+  .float-child {
+    width: 50%;
+    float: left;
+    padding: 20px;
+  }  
+  
+}
+
+canvas{
+  width: 1000px;
+  height: 800px;
+}
+
 body {
   background-image: url("src/Images/WoodTexture.png");
   color: lightgray;
@@ -23,14 +63,19 @@ header{
   justify-content: space-between;
   background-color: rgb(0, 0, 0);
   top:0;
-  width:100%;
+  width: auto;
   z-index: 1;
 }
+
+nav{
+  width: auto;
+}
+
 img{
-  height:55px;
+  height: 60px;
   margin: 20px;
-  margin-left: 45%;
-  margin-right: 45%;
+  margin-left: auto;
+  margin-right: auto;
 }
 canvas{
   cursor: pointer;
@@ -72,7 +117,7 @@ input{
   border-width: 2px;
   border-style: solid;
   background: rgba(45, 45, 45, .6);
-  float: left ;
+  float: right;
 }
 #pastResults{
   background-color: black;
@@ -84,11 +129,7 @@ tr:first-child {
   font-style: italic;
   font-weight: bolder;
 }
-.float-child {
-  width: 50%;
-  float: left;
-  padding: 20px;
-}  
+
 #entriescounter{
   font-size: small;
   color: white;
@@ -153,8 +194,6 @@ tr:first-child {
 }
 .langSelect{
   display: block;
-  max-width:40px;
-  max-height:40px;
   width: auto;
   height: auto;
   cursor: pointer;
