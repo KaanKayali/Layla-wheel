@@ -1,0 +1,73 @@
+{
+    "english": {
+      "lastPicks": "Last Picks",
+      "addAllEntries": "Add All Entries",
+      "removeEntry": "Remove Entry",
+      "segmentCounter": "Number of Segments",
+      "alertEntriesAdded": "The Entries have been added!",
+      "alertNotEnoughSegments": "The Number of Segments cannot be null!",
+      "Uptime": "Spin Duration:",
+      "design" : "Wheel Designs"
+    },
+    "german": {
+      "lastPicks": "Letzte Gewinner",
+      "addAllEntries": "Alle Einträge hinzufügen",
+      "removeEntry": "Eintrag entfernen",
+      "segmentCounter": "Anzahl Segmente",
+      "alertEntriesAdded": "Die Einträge wurden hinzugefügt!",
+      "alertNotEnoughSegments": "Die Anzahl Segmente darf nicht null sein!",
+      "Uptime": "Spin-Dauer:",
+      "design" : "Rad Designs"
+    },
+    "albania": {
+      "lastPicks": "Pikat e fundit",
+      "addAllEntries": "Shto të gjitha hyrjet",
+      "removeEntry": "Largo hyrjen",
+      "segmentCounter": "Numri i segmenteve",
+      "alertEntriesAdded": "Hyrjet janë shtuar!",
+      "alertNotEnoughSegments": "Numri i segmentit nuk mund të jetë i pavlefshëm!",
+      "Uptime": "Kohëzgjatja e rrotullimit:",
+      "design" : "Dizajni i rrotave"
+    },
+    "bosnian": {
+      "lastPicks": "Posljednji izbori",
+      "addAllEntries": "Dodaj sve unose",
+      "removeEntry": "Ukloni unos",
+      "segmentCounter": "Broj segmenata",
+      "alertEntriesAdded": "Unosi su dodani!",
+      "alertNotEnoughSegments": "Broj segmenta ne može biti null!",
+      "Uptime": "Trajanje okretanja:",
+      "design" : "Dizajn točkova"
+    },
+    "croatian": {
+      "lastPicks": "Zadnji izbori",
+      "addAllEntries": "Dodaj sve unose",
+      "removeEntry": "Ukloni unos",
+      "segmentCounter": "Broj segmenata",
+      "alertEntriesAdded": "Unosi su dodani!",
+      "alertNotEnoughSegments": "Broj segmenta ne može biti nula!",
+      "Uptime": "Trajanje vrtnje:",
+      "design" : "Dizajni kotača"
+    },
+    "serbian": {
+      "lastPicks": "Poslednji izbori",
+      "addAllEntries": "Dodaj sve unose",
+      "removeEntry": "Ukloni unos",
+      "segmentCounter": "Број сегмената",
+      "alertEntriesAdded": "Уноси су додати!",
+      "alertNotEnoughSegments": "Број сегмента не може бити нулл!",
+      "Uptime": "Трајање окретања:",
+      "design" : "Дизајн точкова"
+    },
+    "eatLanguage": {
+      "lastPicks": "🥙🥙🥙🥙🥙🥙🥙",
+      "addAllEntries": "🥙🥙🥙🥙",
+      "removeEntry": "🥙🥙🥙🥙🥙🥙🥙",
+      "segmentCounter": "🥙🥙🥙🥙🥙",
+      "alertEntriesAdded": "🥙🥙🥙🥙🥙🥙",
+      "alertNotEnoughSegments": "🥙🥙🥙🥙🥙🥙",
+      "Uptime": "🥙🥙",
+      "design" : "🥙🥙🥙🥙🥙"
+    }
+}
+  

@@ -1,14 +1,12 @@
 * {
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
-}
-  
+} 
 body {
-  background-image: url("https://media.discordapp.net/attachments/985795697783762965/985865559784702012/UnbenanRWFWWnt.png?width=856&height=595");
+  background-image: url("src/Images/WoodTexture.png");
   color: lightgray;
   margin: 0 auto;
 }
- 
 .btn {
   background: darkgray;
   border: 1px solid rgb(72, 70, 70);
@@ -16,6 +14,8 @@ body {
   padding: 0.25em 0.5em;
   border-radius: 0.25em;
   outline: none;
+  cursor: pointer;
+  
 }
 header{
   display:flex;
@@ -26,22 +26,11 @@ header{
   width:100%;
   z-index: 1;
 }
-
 img{
   height:55px;
   margin: 20px;
   margin-left: 45%;
   margin-right: 45%;
-}
-
-.wrapper {
-  margin-right: auto; /* 1 */
-  margin-left:  auto; /* 1 */
-
-  max-width: 960px; /* 2 */
-
-  padding-right: 10px; /* 3 */
-  padding-left:  10px; /* 3 */
 }
 canvas{
   cursor: pointer;
@@ -52,32 +41,25 @@ canvas{
 ::-webkit-scrollbar {
   width: 10px;
 }
-
 ::-webkit-scrollbar-track {
   background: black; 
 }
-
 ::-webkit-scrollbar-thumb {
   background: #ef7b00; 
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: orange; 
 }
 
 
-
 /* Mark Text */
-
 * ::selection {
   color: #1f1f1f;
   background: #ef7b00;
 }
 
 
-
-
-/* Wheel Editor*/
+/* Wheel Editor */
 #entrylistForm{
   width: 150px;
 }
@@ -92,7 +74,6 @@ input{
   background: rgba(45, 45, 45, .6);
   float: left ;
 }
-
 #pastResults{
   background-color: black;
   border-collapse: collapse;
@@ -112,7 +93,109 @@ tr:first-child {
   font-size: small;
   color: white;
 }
- 
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;  
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  background: rgb(255, 141, 2);
+  cursor: pointer;
+}
+#dateCell{
+  text-align: right;
+}
+#entryCell{
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 
+
+/* WheelDesign Select */
+.designcolumn{
+  float: left;
+  width: 23%;
+}
+.designSelect{
+  display: block;
+  max-width:40px;
+  max-height:40px;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+#DesignText{
+  text-align: center;
+}
+
+
+/* Language Select */
+#languageDiv{
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  background: rgba(45, 45, 45, .6);
+}
+#languageDiv::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.langSelect{
+  display: block;
+  max-width:40px;
+  max-height:40px;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+.column {
+  float: left;
+  width: 16.66666%;
+}
+
+/* Winner Message */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url("src/Images/WoodTexture.png");
+  box-shadow: 0 0 10px rgb(255, 111, 0);
+  width: 400px;
+  height: 200px;
+  animation-name: flyIn;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+@keyframes flyIn {
+  0% {
+    transform: translate(-50%, 100%);
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+#popUpLogo{
+  margin: auto;
+}
+#winnerEntry{
+  text-align: center;
+}
+#closePopUpBtn{
+  background-color: darkorange;
+  border-color: black;
+}
 
 

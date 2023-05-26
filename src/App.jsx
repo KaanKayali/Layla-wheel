@@ -1,110 +1,107 @@
+import { func } from "prop-types";
 import "./styles.css";
+import React, { useState } from 'react';
 import WheelComponent from "react-wheel-of-prizes";
+import translations from "./translations.json";
+import ShowWinner from "./winner.jsx";
+import {getFormattedDate,changeWheelDesign,getColorCode,sliderchanged,processInput} from "./wheelEditorFunctions.js";
 
+const segments = ["1", "2"];
+const segColors = ["saddlebrown", "darkred"];
 export default function App() {
-  const entries = [];
-  const segments = ["casper", "kaan"];
-  const segColors = ["saddlebrown", "darkred"];
+  const [showWinner, setShowWinner] = useState(false);
+  const [winnerName, setWinnerName] = useState('');
+  const [refreshWheel, setRefreshWheel] = useState(false);
+  var alertNotEnoughSegments = "";
+
   const onFinished = (winner) => {
     addEntryForLocalSave(winner)
+    setWinnerName(winner);
+    setShowWinner(true);
+    console.log(segments);
   };
 
-  window.onload = function() {
-    loadOldWins();
+  const closeWinnerPopup = () => { setShowWinner(false); };
+  window.onload = function() { loadOldWins();
+    //Put the right color in the array
+    segColors.length = 0;
+    var { colour1, colour2 } = getColorCode();
+    segColors.push(colour1, colour2)
+    setRefreshWheel(!refreshWheel);
   };
-
-  function getFormattedDate(stringDate){
-    const currentDate = new Date(stringDate)
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth() + 1;
-    const year = currentDate.getFullYear();
-    const formattedDate = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;
-    
-    return formattedDate;
-    
-  }
-
-  function newInputBox(){
-    const form = document.getElementById("entrylistForm");
-    const newInput = document.createElement("input");
-    newInput.type = "text";
-    newInput.name = "newInput";
-    form.appendChild(newInput);
-  }
-
-  function delInputBox(){
-    const form = document.getElementById('entrylistForm');
-    const inputs = form.querySelectorAll('input');
-    const lastInput = inputs[inputs.length - 1];
-    if (inputs.length > 1){
-      form.removeChild(lastInput);
-    }
-  }
 
   function addEntries(){
-    const form = document.getElementById("entrylistForm");
-    const inputs = form.querySelectorAll("input");
-
-    inputs.forEach(input => {
-      segments.push(input.value);
-      console.log(segments);
-    });
+    var input = document.getElementById("entryInput").value;
+    const entries = processInput(input);
+    segments.push(...entries);
+    document.getElementById("entryInput").value = "";
 
     // Get Array lenght
     var arraycount = segments.length;
-    const pelement = document.getElementById('entriescounter').innerHTML = "Current Count of Segments: " + arraycount;
     arraycount = arraycount/2;
     var i = 1;
-
-    $( "#here" ).load(window.location.href + " #here" );
 
     while (i < arraycount) 
     {
       i++
-      segColors.push("saddlebrown", "darkred")
+      var { colour1, colour2 } = getColorCode();
+      segColors.push(colour1, colour2);
     }
+    setLanguage();
+    setRefreshWheel(!refreshWheel);
   }
-
   function loadOldWins(){
-    const storedEntries = JSON.parse(localStorage.getItem('Items'));
+    const storedEntries = JSON.parse(localStorage.getItem('PastEntries'));
     const table = document.getElementById('pastResults');
     table.innerHTML = "";
 
+    
     //Insert Header
     const row = table.insertRow();
-    const InfoCell = row.insertCell();
-    InfoCell.innerHTML = "-";
     const HeadCell = row.insertCell();
+    HeadCell.id = "headCell";
     HeadCell.innerHTML = "Last Picks";
 
-    //Fill Table
-    storedEntries.forEach((entry, index) => {
-      const row = table.insertRow();
-      const indexCell = row.insertCell();
-      indexCell.innerHTML = index + 1;
-    
-      const entryCell = row.insertCell();
-      entryCell.innerHTML = entry.content;
-    
-      const dateCell = row.insertCell();
-      dateCell.innerHTML = getFormattedDate(entry.date);
-    });
-  }
+    if(storedEntries){
+      //Fill Table
+      storedEntries.forEach((entry, index) => {
+        const row = table.insertRow();
 
+        const entryCell = row.insertCell();
+        entryCell.id = "entryCell";
+        entryCell.innerHTML = entry.content;
+      
+        const dateCell = row.insertCell();
+        dateCell.id = "dateCell";
+        dateCell.innerHTML = getFormattedDate(entry.date);
+      });
+    }else{
+      alert('Name is not found');
+    }
+    setLanguage();
+  }
   function addEntryForLocalSave(content) {
     //Adds the Entry to the Array
     const currentDate = new Date();
+    var storedEntries = JSON.parse(localStorage.getItem('PastEntries'));
     const entry = { content: content, date: currentDate };
 
-    // If the array has more than 5 entries, remove the oldest one
-    if (entries.length >= 5) {
-      entries.shift();
+    
+    if(storedEntries){
+      // If the array has more than 5 entries, remove the oldest one
+      if (storedEntries.length >= 5) {
+        storedEntries.shift();
+      }
     }
-    entries.push(entry);
-    console.log(entries);
+    else{
+      storedEntries = [];
+    }
+    
+    storedEntries.push(entry);
+    console.log(storedEntries);
 
     //Push the Entries Array into local Storage
-    localStorage.setItem('Items', JSON.stringify(entries));
+    localStorage.setItem('PastEntries', JSON.stringify(storedEntries));
   
     //Refreshes the Table
     loadOldWins();
@@ -115,22 +112,93 @@ export default function App() {
     
     // Find the index of the segment to delete
     const indexToDelete = segments.findIndex(segment => segment === segmentName);
-    
-    // Delete the segment at the found index
-    if (indexToDelete !== -1) {
-      segments.splice(indexToDelete, 1);
+    if (segments.length > 1){
+      // Delete the segment at the found index
+      if (indexToDelete !== -1) {
+        segments.splice(indexToDelete, 1);
+      }
     }
-    console.log(segments);
+    else{
+      setLanguage();
+      alert(alertNotEnoughSegments);
+    }
+    document.getElementById("delinput").value = "";
+    setRefreshWheel(!refreshWheel);
+  }
+  function languageChange(languageCode){
+    localStorage.setItem('Language', languageCode);
+    setLanguage();
+  }
+  function setLanguage(){
+    var languageCode = localStorage.getItem('Language');
+
+    //Head Cell of Table
+    const element1 = document.getElementById("headCell");
+    //Add all Entries Button
+    const element2 = document.getElementById("addAll");
+    //Remove Entry Button
+    const element3 = document.getElementById("deleteInput"); 
+    //Segments Counter
+    const element4 = document.getElementById("segmentsCounter");
+    //Uptime Text
+    const element5 = document.getElementById("UptimeID");
+    //Uptime Text
+    const element6 = document.getElementById("DesignText");
     
+    element1.innerHTML = translations[languageCode].lastPicks;
+    element2.innerHTML = translations[languageCode].addAllEntries;
+    element3.innerHTML = translations[languageCode].removeEntry;
+    element4.innerHTML = translations[languageCode].segmentCounter + ": " + segments.length;
+    element5.innerHTML = translations[languageCode].Uptime;
+    element6.innerHTML = translations[languageCode].design;
+
+    //Content of all possible alerts
+    alertNotEnoughSegments = translations[languageCode].alertNotEnoughSegments;
+    
+    //Removes all markings
+    const allLanguages = document.getElementsByClassName("langSelect");
+    for (let i = 0; i < allLanguages.length; i++) {
+      const element = allLanguages[i];
+      element.style.border = 'none';
+    }
+
+    //Marks the Selected Language
+    const selectedLanguage = document.getElementById(languageCode);
+
+    //"eatLanguage" is a hidden Joke!
+    if (languageCode != "eatLanguage"){
+      selectedLanguage.style.border = '2px solid orange';
+    }
   }
 
   return (
     <>
       <header>
-            <img src="https://cdn.discordapp.com/attachments/985795697783762965/985879958729662494/Unbenannt.png"/>
+            <img src="src/Images/laylalogo.png" onClick={() => languageChange('eatLanguage')} id="eatLanguage"/>
       </header> 
-      <div class="float-container">
+      <div id="languageDiv">
+          {/*Language Change*/}
+          <div class="column">
+            <img src="src/Images/Flags/UK-Flag.png" alt="Image of the UK Flag" onClick={() => languageChange('english')} className="langSelect" id="english"/>
+          </div>
+          <div class="column">
+            <img src="src/Images/Flags/German-Flag.png" alt="Image of the German Flag" onClick={() => languageChange('german')} className="langSelect" id="german"/>
+          </div>
+          <div class="column">
+            <img src="src/Images/Flags/Albania-Flag.jpg" alt="Image of the Albanian Flag" onClick={() => languageChange('albania')} className="langSelect" id="albania"/>
+          </div>
+          <div class="column">
+            <img src="src/Images/Flags/Bosnia-Flag.png" alt="Image of the Bosnian Flag" onClick={() => languageChange('bosnian')} className="langSelect" id="bosnian"/>
+          </div>
+          <div class="column">
+            <img src="src/Images/Flags/Croatia-Flag.png" alt="Image of the Croation Flag" onClick={() => languageChange('croatian')} className="langSelect" id="croatian"/>
+          </div>
+          <div class="column">
+            <img src="src/Images/Flags/Serbia-Flag.png" alt="Image of the Serbian Flag" onClick={() => languageChange('serbian')} className="langSelect" id="serbian"/>
+          </div>
+      </div>
 
+      <div class="float-container">
       <div class="float-child">
         <div className="App">
           <div>
@@ -144,9 +212,11 @@ export default function App() {
               buttonText="Layla"
               isOnlyOnce={false}
               size={190}
-              upDuration={500}
+              upDuration={600}
               downDuration={600}
-              fontFamily="Times New Roman"/>
+              fontFamily="Times New Roman"
+              key={refreshWheel ? 'refresh' : 'no-refresh'}
+              />
           </div>
         </div>
       </div>
@@ -166,21 +236,40 @@ export default function App() {
           </table>
             {/* Input Field in Array*/}
             <form id="entrylistForm">
-              <input type="text" className="entryInput"/>
-              <input type="text" className="entryInput"/>
+              <input type="text" id="entryInput" placeholder="1,2,3,4..."/>
             </form>
-            <button className="btn" onClick={newInputBox}>+</button>
-            <button className="btn" onClick={delInputBox}>-</button>
-            <button className="btn" onClick={addEntries}>Add all Entries</button> <br />
-                  
-            {/* Show last Results */}
-            <input type="text" id="delinput" className="entryInput" placeholder="Entry that you want to delete"></input> <br />
-            <button className="btn" onClick={removeEntryFromArray}>Remove Entry</button> <br />
-            <p id="entriescounter"></p>
+            <button className="btn" onClick={addEntries} id="addAll">Add all Entries</button>
+            <p id="segmentsCounter"></p><br/>
+
+            {/* Delete Segments */}
+            <input type="text" id="delinput" className="entryInput"></input> <br />
+            <button className="btn" onClick={removeEntryFromArray} id="deleteInput">Remove Entry</button><br/><br/>
+
+            {/* Range */}
+            <p id="UptimeID"></p>
+            <input type="range" min="1" max="10000" class="slider" id="uptimeSlider" defaultValue={1} onChange={sliderchanged}/>
+            <br /><br />
+
+            {/* Wheel Designs */}
+            <p id="DesignText">Wheel Designs</p>
+            <div class="designcolumn">
+              <img src="src/Images/WheelDesigns/darkred_saddlebrown.png" alt="Design 1" onClick={() => changeWheelDesign("darkred","saddlebrown")} className="designSelect" id="darkred/saddlebrown"/>
+            </div>
+            <div class="designcolumn">
+              <img src="src/Images/WheelDesigns/black_saddlebrown.png" alt="Design 2" onClick={() => changeWheelDesign("black","saddlebrown")} className="designSelect" id="black/saddlebrown"/>
+            </div>
+            <div class="designcolumn">
+              <img src="src/Images/WheelDesigns/darkred_black.png" alt="Design 3" onClick={() => changeWheelDesign("darkred","black")} className="designSelect" id="darkred/black"/>
+            </div>
+            <div class="designcolumn">
+              <img src="src/Images/WheelDesigns/darkred_gray.png" alt="Design 4" onClick={() => changeWheelDesign("darkred","gray")} className="designSelect" id="darkred/gray"/>
+            </div>
         </div>
+        {showWinner && (<ShowWinner winner={winnerName} onClose={closeWinnerPopup}/>)}
       </div>
     </div>  
     </>
-  );
+  ); 
 }
+
 
