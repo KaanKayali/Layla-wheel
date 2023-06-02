@@ -1,3 +1,8 @@
+import translations from "./translations.json";
+import {getAuth, signOut} from "firebase/auth";
+import {db } from './firebase.js';
+import {doc, setDoc,getDoc,updateDoc  } from "firebase/firestore";
+
 export function processInput(input) {
   const entries = input.split(",").map(entry => entry.trim());
   return entries;
@@ -12,6 +17,20 @@ export function getFormattedDate(stringDate){
     const formattedDate = `${hour < 10 ? '0' + hour : hour}:${min < 10 ? '0' + min : min} | ${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;
     
     return formattedDate;
+}
+function getFirebaseDateFormat(timestamp){
+  // Convert the Firestore timestamp to a JavaScript Date object
+  const date = timestamp.toDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Months are zero-based
+  const year = date.getFullYear();
+  const formattedDate = `${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${year}`;
+  // Combine the time and date
+  const combined = `${formattedTime} | ${formattedDate}`;
+  return combined;
 }
 export function changeWheelDesign(var1, var2){
 
@@ -80,5 +99,190 @@ export function loadoldsegments(){
     newSegments.push("Example 1", "Example 2");
   }  
   return newSegments;
+}
+export function setLanguage(){
+  var languageCode = localStorage.getItem('Language');
+  const storedSegments = JSON.parse(localStorage.getItem('Segments'));
+
+  //Head Cell of Table
+  const element1 = document.getElementById("headCell");
+  //Add all Entries Button
+  const element2 = document.getElementById("addAll");
+  //Remove Entry Button
+  const element3 = document.getElementById("deleteInput"); 
+  //Segments Counter
+  const element4 = document.getElementById("segmentsCounter");
+  //Uptime Text
+  const element5 = document.getElementById("UptimeID");
+  //Uptime Text
+  const element6 = document.getElementById("DesignText");
+
+  element1.innerHTML = translations[languageCode].lastPicks;
+  element2.innerHTML = translations[languageCode].addAllEntries;
+  element3.innerHTML = translations[languageCode].removeEntry;
+  element4.innerHTML = translations[languageCode].segmentCounter + ": " + storedSegments.length;
+  element5.innerHTML = translations[languageCode].Uptime;
+  element6.innerHTML = translations[languageCode].design;
+  
+  //Removes all markings
+  const allLanguages = document.getElementsByClassName("langSelect");
+  for (let i = 0; i < allLanguages.length; i++) {
+    const element = allLanguages[i];
+    element.style.border = 'none';
+  }
+
+  //Marks the Selected Language
+  const selectedLanguage = document.getElementById(languageCode);
+
+  selectedLanguage.style.border = '2px solid orange';
+
+}
+export function loadOldWins(){
+  const storedEntries = JSON.parse(localStorage.getItem('PastEntries'));
+  const table = document.getElementById('pastResults');
+  table.innerHTML = "";
+
+  //Insert Header
+  const row = table.insertRow();
+  const HeadCell = row.insertCell();
+  HeadCell.id = "headCell";
+  HeadCell.innerHTML = "Last Picks";
+
+  const userState = getUserStatus();
+  if (userState) {
+    // A User is signed in
+    getAccountEntries()
+      .then((retrievedEntries) => {
+        retrievedEntries.forEach((entry, index) => {
+          const row = table.insertRow();
+          const entryCell = row.insertCell();
+          entryCell.id = "entryCell";
+          entryCell.innerHTML = entry.Entry || "";
+          const dateCell = row.insertCell();
+          dateCell.id = "dateCell";
+          var date = getFirebaseDateFormat(entry.date);
+          dateCell.innerHTML = date;
+        });
+      })
+  }else {
+    if(storedEntries){
+      //Fill Table
+      storedEntries.forEach((entry, index) => {
+      const row = table.insertRow();
+      const entryCell = row.insertCell();
+      entryCell.id = "entryCell";
+      entryCell.innerHTML = entry.content;
+      const dateCell = row.insertCell();
+      dateCell.id = "dateCell";
+      dateCell.innerHTML = getFormattedDate(entry.date);
+      });
+    }
+  }
+  
+  setLanguage();
+}
+export function addEntryForLocalSave(content) {
+  const userState = getUserStatus();
+  if (userState) {
+    // A User is signed in
+    addEntryToDatabase(content);
+  }else {
+    //Adds the Entry to the Array
+    const currentDate = new Date();
+    var storedEntries = JSON.parse(localStorage.getItem('PastEntries'));
+    const entry = { content: content, date: currentDate };
+
+    
+    if(storedEntries){
+      // If the array has more than 5 entries, remove the oldest one
+      if (storedEntries.length >= 5) {
+        storedEntries.shift();
+      }
+    }
+    storedEntries.push(entry);
+    console.log(storedEntries);
+
+    //Push the Entries Array into local Storage
+    localStorage.setItem('PastEntries', JSON.stringify(storedEntries));
+  }
+
+  //Refreshes the Table
+  loadOldWins();
+}
+export function getUserStatus(){
+  const auth = getAuth();
+  const user = auth.currentUser;
+  return user;
+}
+export async function addEntryToDatabase(newEntry){
+  const userState = getUserStatus();
+  const currentDate = new Date();
+
+  // Retrieve the user's document from Firestore
+  const userDocRef = doc(db, "users", userState.uid);
+  const userDocSnapshot = await getDoc(userDocRef);
+  if (userDocSnapshot.exists()) {
+    const userData = userDocSnapshot.data();
+    const RetrievedEntries = userData.SavedEntries || []; // Retrieve the 'SavedEntires' field or set it as an empty array if it doesn't exist
+    const entry = { Entry: newEntry, date: currentDate };
+
+    RetrievedEntries.push(entry);
+
+    // Update the 'Savedentries' field in Firestore
+    await updateDoc(userDocRef, { SavedEntries: RetrievedEntries});
+  }
+}
+export async function getAccountEntries(){
+  const userState = await getUserStatus(); 
+  var RetrievedEntries = [];
+
+  // Retrieve the user's document from Firestore
+  const userDocRef = doc(db, "users", userState.uid);
+  const userDocSnapshot = await getDoc(userDocRef);
+
+  if (userDocSnapshot.exists()) {
+    const userData = userDocSnapshot.data();
+    RetrievedEntries = userData.SavedEntries || []; // Retrieve the 'SavedEntries' field or set it as an empty array if it doesn't exist    
+  }
+  return RetrievedEntries;
+}
+export function fireBaseLogOut(){
+  const auth = getAuth();
+  signOut(auth)
+    .then(() => {
+      console.log('User logged out successfully.');
+      location.reload();
+    })
+    .catch((error) => {
+    });
+}
+export function showProfile(){
+  const userState = getUserStatus(); 
+  //Delete the Account Icon if it exists
+  var element = document.getElementById("AccountIcon");
+  if (element) {
+    element.parentNode.removeChild(element);
+  }
+  
+  const accountDiv = document.getElementById('accountDiv');
+
+  const imgElement = document.createElement('img');
+  imgElement.src = "src/Images/Account/signout.png"
+  imgElement.id = 'LogoutIcon';
+  imgElement.className = 'accounticons';
+  imgElement.addEventListener('click', fireBaseLogOut);
+  accountDiv.appendChild(imgElement);
+
+  const profilePicture = document.createElement('img');
+  profilePicture.src = userState.photoURL;
+  profilePicture.id = 'pfp';
+  accountDiv.appendChild(profilePicture);
+
+  var userInfo = document.createElement('p');
+  userInfo.textContent = userState.email;
+  userInfo.id ="useremail";
+  accountDiv.appendChild(userInfo)
+
+
 }
 

@@ -121,7 +121,6 @@ canvas{
   width: 1000px;
   height: 800px;
 }
-
 body {
   background-image: url("src/Images/WoodTexture.png");
   color: lightgray;
@@ -139,17 +138,14 @@ body {
 header{
   display:flex;
   margin: 0;
-  justify-content: space-between;
   background-color: rgb(0, 0, 0);
   top:0;
   width: auto;
   z-index: 1;
 }
-
 nav{
   width: auto;
 }
-
 img{
   margin: 20px;
   margin-left: auto;
@@ -182,11 +178,50 @@ canvas{
 }
 
 
+/* Account */
+#pfp{
+  width: 40px;
+  margin-left: 1%;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  float: left;
+  border: 4px solid red;
+  padding: 2px;
+  border-top-color: saddlebrown;
+  border-left-color: saddlebrown;
+}
+.accounticons{
+  width: 30px;
+  height: 30px;
+}
+#accountDiv{
+  float: left;
+  width: 100%;
+}
+#LogoutIcon{
+  cursor: pointer;
+  float: right;
+  margin-right: 1%;
+  margin-top: 2%;
+}
+#useremail{
+  color: darkgray;
+  font-style: italic;
+  float: left;
+  margin-top: 2.5%;
+  margin-left: 1%;
+}
+#AccountIcon{
+  margin-left: 1%;
+  cursor: pointer;
+}
+
+
 /* Wheel Editor */
 #entrylistForm{
   width: 150px;
 }
-
 .InputDiv{
   border-color: black;
   padding: 15px;
@@ -198,16 +233,17 @@ canvas{
 #pastResults{
   background-color: black;
   border-collapse: collapse;
-  
-  
+  overflow-y: scroll;
+}
+#pastResultsDiv {
+  overflow-y: auto;
+  max-height: 200px;
 }
 tr:nth-child(even) {background-color: darkred;}
 tr:first-child {
   font-style: italic;
   font-weight: bolder;
 }
-
-
 #entriescounter{
   font-size: small;
   color: white;
@@ -284,7 +320,7 @@ tr:first-child {
   width: 16.66666%;
 }
 
-/* Winner Message */
+/* Popups  */
 .popup {
   position: fixed;
   top: 50%;
@@ -297,6 +333,19 @@ tr:first-child {
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
 }
+.Accountpopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(100%, 100%);
+  background-image: url("src/Images/WoodTexture.png");
+  box-shadow: 0 0 10px rgb(255, 111, 0);
+  animation-name: flyIn;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
 @keyframes flyIn {
   0% {
     transform: translate(-50%, 100%);
@@ -314,6 +363,25 @@ tr:first-child {
 #closePopUpBtn{
   background-color: darkorange;
   border-color: black;
+}
+.AccountForm{
+  width: max-content;
+  text-align: center;
+  padding: 20px;
+}
+#formRegister{
+  margin-top: 10%;
+}
+.submitBtn{
+  background: orange;
+  color: hsl(0, 3%, 17%);
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+  font-weight: bold;
+}
+#advertiseText{
+  font-style: italic;
+  font-weight: normal;
 }
 
 

@@ -1,49 +1,64 @@
-import { func } from "prop-types";
 import "./styles.css";
 import React, { useState } from 'react';
 import WheelComponent from "react-wheel-of-prizes";
-import translations from "./translations.json";
 import ShowWinner from "./winner.jsx";
-import {getFormattedDate,changeWheelDesign,getColorCode,sliderchanged,processInput,setSlider,loadoldsegments} from "./wheelEditorFunctions.js";
+import { getAuth, signOut } from "firebase/auth";
+import Account from "./LoginRegister.jsx";
+
+import {loadOldWins,showProfile,fireBaseLogOut,getUserStatus,setLanguage,addEntryForLocalSave,changeWheelDesign,getColorCode,sliderchanged,processInput,setSlider,loadoldsegments} from "./wheelEditorFunctions.js";
 
 const segments = [];
 const segColors = ["saddlebrown", "darkred"];
 export default function App() {
   const [showWinner, setShowWinner] = useState(false);
+  const [Accounts, setAccounts] = useState(false);
   const [winnerName, setWinnerName] = useState('');
   const [refreshWheel, setRefreshWheel] = useState(false);
-  var alertNotEnoughSegments = "";
 
   const onFinished = (winner) => {
     addEntryForLocalSave(winner)
     setWinnerName(winner);
     setShowWinner(true);
-    console.log(segments);
+  };
+  const closeWinnerPopup = () => {
+    setShowWinner(false);
   };
 
-  const closeWinnerPopup = () => { setShowWinner(false); };
-  window.onload = function() { loadOldWins();
+  const closeAccountsPopup  = () => {
+    setAccounts(false);
+    switchIcons();
+    loadOldWins();
+  };
+  window.onload = function() { 
     //Load old Segments or load examples
     var newsegments = loadoldsegments();
     segments.push(...newsegments);
+    loadOldWins();
     //Put the right color in the array
     segColors.length = 0;
     var { colour1, colour2 } = getColorCode();
     for (let i = 0; i < segments.length/2; i++) {
       segColors.push(colour1, colour2)
     }
-    setRefreshWheel(!refreshWheel);
     setSlider();
-
-
+    switchIcons();
+    setRefreshWheel(!refreshWheel);
     
   };
-
+  function allowLogin(){
+    setAccounts(true);
+  }
   function addEntries(){
+    //Get Input and clear
     var input = document.getElementById("entryInput").value;
     const entries = processInput(input);
-    segments.push(...entries);
     document.getElementById("entryInput").value = "";
+
+    //Make sure Example 1/2 are not inside the Segments
+    const segmentsNew = segments.filter(segment => segment !== "Example 1" && segment !== "Example 2");
+    segmentsNew.push(...entries);
+    segments.length = 0;
+    segments.push(...segmentsNew);
 
     // Get Array lenght
     var arraycount = segments.length;
@@ -60,62 +75,7 @@ export default function App() {
     setLanguage();
     setRefreshWheel(!refreshWheel);
   }
-  function loadOldWins(){
-    const storedEntries = JSON.parse(localStorage.getItem('PastEntries'));
-    const table = document.getElementById('pastResults');
-    table.innerHTML = "";
 
-    
-    //Insert Header
-    const row = table.insertRow();
-    const HeadCell = row.insertCell();
-    HeadCell.id = "headCell";
-    HeadCell.innerHTML = "Last Picks";
-
-    if(storedEntries){
-      //Fill Table
-      storedEntries.forEach((entry, index) => {
-        const row = table.insertRow();
-
-        const entryCell = row.insertCell();
-        entryCell.id = "entryCell";
-        entryCell.innerHTML = entry.content;
-      
-        const dateCell = row.insertCell();
-        dateCell.id = "dateCell";
-        dateCell.innerHTML = getFormattedDate(entry.date);
-      });
-    }else{
-    }
-    setLanguage();
-  }
-  function addEntryForLocalSave(content) {
-    //Adds the Entry to the Array
-    const currentDate = new Date();
-    var storedEntries = JSON.parse(localStorage.getItem('PastEntries'));
-    const entry = { content: content, date: currentDate };
-
-    
-    if(storedEntries){
-      // If the array has more than 5 entries, remove the oldest one
-      if (storedEntries.length >= 5) {
-        storedEntries.shift();
-      }
-    }
-    else{
-      storedEntries = [];
-    }
-    
-    storedEntries.push(entry);
-    console.log(storedEntries);
-
-    //Push the Entries Array into local Storage
-    localStorage.setItem('PastEntries', JSON.stringify(storedEntries));
-  
-    //Refreshes the Table
-    loadOldWins();
-  }
-e  
   function removeEntryFromArray(){
     const form = document.getElementById("delinput");
     const segmentName = form.value;
@@ -130,7 +90,6 @@ e
     }
     else{
       setLanguage();
-      alert(alertNotEnoughSegments);
     }
     localStorage.setItem('Segments', JSON.stringify(segments));
     document.getElementById("delinput").value = "";
@@ -140,53 +99,34 @@ e
     localStorage.setItem('Language', languageCode);
     setLanguage();
   }
-  function setLanguage(){
-    var languageCode = localStorage.getItem('Language');
-
-    //Head Cell of Table
-    const element1 = document.getElementById("headCell");
-    //Add all Entries Button
-    const element2 = document.getElementById("addAll");
-    //Remove Entry Button
-    const element3 = document.getElementById("deleteInput"); 
-    //Segments Counter
-    const element4 = document.getElementById("segmentsCounter");
-    //Uptime Text
-    const element5 = document.getElementById("UptimeID");
-    //Uptime Text
-    const element6 = document.getElementById("DesignText");
-    
-    element1.innerHTML = translations[languageCode].lastPicks;
-    element2.innerHTML = translations[languageCode].addAllEntries;
-    element3.innerHTML = translations[languageCode].removeEntry;
-    element4.innerHTML = translations[languageCode].segmentCounter + ": " + segments.length;
-    element5.innerHTML = translations[languageCode].Uptime;
-    element6.innerHTML = translations[languageCode].design;
-
-    //Content of all possible alerts
-    alertNotEnoughSegments = translations[languageCode].alertNotEnoughSegments;
-    
-    //Removes all markings
-    const allLanguages = document.getElementsByClassName("langSelect");
-    for (let i = 0; i < allLanguages.length; i++) {
-      const element = allLanguages[i];
-      element.style.border = 'none';
-    }
-
-    //Marks the Selected Language
-    const selectedLanguage = document.getElementById(languageCode);
-
-    //"eatLanguage" is a hidden Joke!
-    if (languageCode != "eatLanguage"){
-      selectedLanguage.style.border = '2px solid orange';
+  function switchIcons(){
+    const userState = getUserStatus();
+    if (userState) {
+      showProfile();
+    }else{
+      //Delete the AccountIcon if it exists
+      var element = document.getElementById("AccountIcon");
+      if (element) {
+        element.parentNode.removeChild(element);
+      }
+      // JavaScript code to set the img element in the accountDiv
+      const accountDiv = document.getElementById('accountDiv');
+      const imgElement = document.createElement('img');
+      imgElement.alt = 'Login/Register Button';
+      imgElement.src = "src/Images/Account/accountUser.png"
+      imgElement.id = 'AccountIcon';
+      imgElement.className = 'accounticons';
+      imgElement.addEventListener('click', allowLogin);
+      accountDiv.appendChild(imgElement);
     }
   }
+  
 
   return (
     <>
-    <div id="nav">
+      <div id="nav">
       <header>
-          <img src="src/Images/laylalogo.png" onClick={() => languageChange('eatLanguage')} id="eatLanguage"/>
+        <div id="accountDiv"></div>
       </header> 
       <div id="languageDiv">
           {/*Language Change*/}
@@ -231,23 +171,25 @@ e
               />
           </div>
         </div>
-      </div>
+    </div>
       <div class="float-container">
-      
       <div class="float-child">
         <div className="InputDiv">
-          {/* Show last Results */}
-          <table id="pastResults">
-            <thead>
-              <tr>
-                <th>Index</th>
-                <th>Entry</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
+          <div id="pastResultsDiv">
+            {/* Show last Results */}
+            <table id="pastResults">
+              <thead>
+                <tr>
+                  <th>Index</th>
+                  <th>Entry</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+          
             {/* Input Field in Array*/}
             <form id="entrylistForm">
               <input type="text" id="entryInput" placeholder="1,2,3,4..."/>
@@ -293,6 +235,7 @@ e
             </div>
         </div>
         {showWinner && (<ShowWinner winner={winnerName} onClose={closeWinnerPopup}/>)}
+        {Accounts && (<Account onClose={closeAccountsPopup}/>)}
       </div>
       
     </div>  
