@@ -7,7 +7,13 @@
       "alertEntriesAdded": "The Entries have been added!",
       "alertNotEnoughSegments": "The Number of Segments cannot be null!",
       "Uptime": "Spin Duration:",
-      "design" : "Wheel Designs"
+      "design" : "Wheel Designs",
+      "accountHeader" : "Login or Register",
+      "emailLabel" : "E-Mail",
+      "passwordLabel" : "Password",
+      "advertiseText" : "Login or create an account now to save your entire History!",
+      "submitBtnRegister" : "Register",
+      "submitBtnLogin" : "Login"
     },
     "german": {
       "lastPicks": "Letzte Gewinner",
@@ -17,7 +23,13 @@
       "alertEntriesAdded": "Die Einträge wurden hinzugefügt!",
       "alertNotEnoughSegments": "Die Anzahl Segmente darf nicht null sein!",
       "Uptime": "Spin-Dauer:",
-      "design" : "Rad Designs"
+      "design" : "Rad Designs",
+      "accountHeader" : "Einloggen oder Registrieren",
+      "emailLabel" : "E-Mail",
+      "passwordLabel" : "Passwort",
+      "advertiseText" : "Melden Sie sich jetzt an oder erstellen Sie ein Konto, um Ihren gesamten Verlauf zu speichern!",
+      "submitBtnRegister" : "Registrieren",
+      "submitBtnLogin" : "Anmelden"
     },
     "albania": {
       "lastPicks": "Pikat e fundit",
@@ -27,7 +39,13 @@
       "alertEntriesAdded": "Hyrjet janë shtuar!",
       "alertNotEnoughSegments": "Numri i segmentit nuk mund të jetë i pavlefshëm!",
       "Uptime": "Kohëzgjatja e rrotullimit:",
-      "design" : "Dizajni i rrotave"
+      "design" : "Dizajni i rrotave",
+      "accountHeader" : "Identifikohu ose Regjistrohu",
+      "emailLabel" : "E-Mail",
+      "passwordLabel" : "Fjalëkalimi",
+      "advertiseText" : "Identifikohu ose krijo një llogari tani për të ruajtur të gjithë Historinë tënde!",
+      "submitBtnRegister" : "Regjistrohu",
+      "submitBtnLogin" : "Identifikohu"
     },
     "bosnian": {
       "lastPicks": "Posljednji izbori",
@@ -37,7 +55,13 @@
       "alertEntriesAdded": "Unosi su dodani!",
       "alertNotEnoughSegments": "Broj segmenta ne može biti null!",
       "Uptime": "Trajanje okretanja:",
-      "design" : "Dizajn točkova"
+      "design" : "Dizajn točkova",
+      "accountHeader" : "Prijavite se ili registrujte",
+      "emailLabel" : "E-Mail",
+      "passwordLabel" : "Lozinka",
+      "advertiseText" : "Prijavite se ili kreirajte račun sada da sačuvate cijelu historiju!",
+      "submitBtnRegister" : "egistracija",
+      "submitBtnLogin" : "Prijava"
     },
     "croatian": {
       "lastPicks": "Zadnji izbori",
@@ -47,7 +71,13 @@
       "alertEntriesAdded": "Unosi su dodani!",
       "alertNotEnoughSegments": "Broj segmenta ne može biti nula!",
       "Uptime": "Trajanje vrtnje:",
-      "design" : "Dizajni kotača"
+      "design" : "Dizajni kotača",
+      "accountHeader" : "Prijavite se ili Registrirajte se",
+      "emailLabel" : "E-Mail",
+      "passwordLabel" : "Lozinka",
+      "advertiseText" : "Prijavite se ili kreirajte račun sada da biste spremili svoju cijelu povijest!",
+      "submitBtnRegister" : "Registracija",
+      "submitBtnLogin" : "Prijava"
     },
     "serbian": {
       "lastPicks": "Poslednji izbori",
@@ -57,17 +87,13 @@
       "alertEntriesAdded": "Уноси су додати!",
       "alertNotEnoughSegments": "Број сегмента не може бити нулл!",
       "Uptime": "Трајање окретања:",
-      "design" : "Дизајн точкова"
-    },
-    "eatLanguage": {
-      "lastPicks": "🥙🥙🥙🥙🥙🥙🥙",
-      "addAllEntries": "🥙🥙🥙🥙",
-      "removeEntry": "🥙🥙🥙🥙🥙🥙🥙",
-      "segmentCounter": "🥙🥙🥙🥙🥙",
-      "alertEntriesAdded": "🥙🥙🥙🥙🥙🥙",
-      "alertNotEnoughSegments": "🥙🥙🥙🥙🥙🥙",
-      "Uptime": "🥙🥙",
-      "design" : "🥙🥙🥙🥙🥙"
+      "design" : "Дизајн точкова",
+      "accountHeader" : "Пријавите се или региструјте",
+      "emailLabel" : "E-Mail",
+      "passwordLabel" : "Лозинка",
+      "advertiseText" : "Пријавите се или направите налог сада да бисте сачували целу историју!",
+      "submitBtnRegister" : "регистрација",
+      "submitBtnLogin" : "Пријава"
     }
 }
   
