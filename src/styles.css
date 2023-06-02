@@ -30,7 +30,7 @@
   }
 
   *{
-    font-size: 35px;
+    font-size: 30px;
   }
 
 
@@ -66,7 +66,13 @@
     width: 100%;
     float: center;
     padding: 20px;
-  }  
+  }
+
+  .accounticons{
+    width: 65px;
+    height: 65px;
+  }
+
 }
 /*Big Screens*/
 @media screen and (min-width: 1000px){
@@ -113,6 +119,17 @@
 
   #pastResults{
     width: 100%;
+  }
+
+  .AccountForm{
+    width: max-content;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .accounticons{
+    width: 30px;
+    height: 30px;
   }
   
 }
@@ -191,10 +208,7 @@ canvas{
   border-top-color: saddlebrown;
   border-left-color: saddlebrown;
 }
-.accounticons{
-  width: 30px;
-  height: 30px;
-}
+
 #accountDiv{
   float: left;
   width: 100%;
@@ -364,11 +378,7 @@ tr:first-child {
   background-color: darkorange;
   border-color: black;
 }
-.AccountForm{
-  width: max-content;
-  text-align: center;
-  padding: 20px;
-}
+
 #formRegister{
   margin-top: 10%;
 }
