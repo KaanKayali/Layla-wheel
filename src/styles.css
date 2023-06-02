@@ -7,7 +7,7 @@
 /*Smallscreens*/
 @media screen and (max-width: 1000px){
   html{
-    width: 1050px;
+    width: 1025px;
   }
   .langSelect{
     max-width: 250px;
