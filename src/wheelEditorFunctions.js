@@ -8,6 +8,7 @@ export function processInput(input) {
   const entries = input.split(",").map(entry => entry.trim());
   return entries;
 }
+
 export function getFormattedDate(stringDate){
     const currentDate = new Date(stringDate)
     const hour = currentDate.getHours();
@@ -20,16 +21,14 @@ export function getFormattedDate(stringDate){
     return formattedDate;
 }
 function getFirebaseDateFormat(timestamp){
-  // Convert the Firestore timestamp to a JavaScript Date object
   const date = timestamp.toDate();
   const hours = date.getHours();
   const minutes = date.getMinutes();
   const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   const day = date.getDate();
-  const month = date.getMonth() + 1; // Months are zero-based
+  const month = date.getMonth() + 1;
   const year = date.getFullYear();
   const formattedDate = `${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${year}`;
-  // Combine the time and date
   const combined = `${formattedTime} | ${formattedDate}`;
   return combined;
 }
@@ -73,15 +72,15 @@ export function getColorCode(){
   return { colour1: colorCode1, colour2: colorCode2 };
 }
 export function sliderchanged(){
-  const counter = document.getElementById("UptimeID");
+  //Set the change in Localstorage
   var range = document.getElementById("uptimeSlider").value;
   localStorage.setItem('UpDuration', range);
   location.reload();
 }
 export function setSlider(){
+  //Loads the set number from LocalStorage
   var range = document.getElementById("uptimeSlider");
   const x = localStorage.getItem('UpDuration');
-
   if(x){
     range.value = localStorage.getItem('UpDuration');
     localStorage.setItem('UpDuration', range.value);
@@ -98,6 +97,10 @@ export function loadoldsegments(){
     newSegments.push("Example 1", "Example 2");
   }  
   return newSegments;
+}
+export function languageChange(languageCode){
+  localStorage.setItem('Language', languageCode);
+  setLanguage();
 }
 export function setLanguage(){
   var languageCode = localStorage.getItem('Language');

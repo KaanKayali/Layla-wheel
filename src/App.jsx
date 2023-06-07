@@ -3,9 +3,8 @@ import React, { useEffect,useState } from 'react';
 import WheelComponent from "react-wheel-of-prizes";
 import ShowWinner from "./winner.jsx";
 import Account from "./LoginRegister.jsx";
-import {db,auth } from './firebase.js';
-
-import {loadOldWins,checkForEmptyLocalStorage,showProfile,getUserStatus,setLanguage,addEntryForLocalSave,changeWheelDesign,getColorCode,sliderchanged,processInput,setSlider,loadoldsegments} from "./wheelEditorFunctions.js";
+import {auth } from './firebase.js';
+import {loadOldWins,languageChange,checkForEmptyLocalStorage,showProfile,getUserStatus,setLanguage,addEntryForLocalSave,changeWheelDesign,getColorCode,sliderchanged,processInput,setSlider,loadoldsegments} from "./wheelEditorFunctions.js";
 
 const segments = [];
 const segColors = ["saddlebrown", "darkred"];
@@ -22,45 +21,32 @@ export default function App() {
       switchIcons();
     });
     return () => {
-      unsubscribe(); // Unsubscribe the listener when the component unmounts
+      unsubscribe();
     };
   }, []);
 
-  const onFinished = (winner) => {
-    addEntryForLocalSave(winner)
-    setWinnerName(winner);
-    setShowWinner(true);
-  };
-  const closeWinnerPopup = () => {
-    setShowWinner(false);
-  };
-  const closeAccountsPopup  = () => {
-    setAccounts(false);
-    switchIcons();
-    loadOldWins();
-  };
+  //Bunch of small Functions to set the Popups
+  const onFinished = (winner) => { addEntryForLocalSave(winner); setWinnerName(winner); setShowWinner(true);};
+  const closeWinnerPopup = () => { setShowWinner(false);};
+  const closeAccountsPopup  = () => { setAccounts(false); switchIcons();};
+  function allowLogin(){ setAccounts(true); }
 
   window.onload = function() { 
+    //Make sure everything is loading correctly with Localstorage
     checkForEmptyLocalStorage();
-    //Load old Segments or load examples
     var newsegments = loadoldsegments();
     segments.push(...newsegments);
-    //Put the right color in the array
     segColors.length = 0;
     var { colour1, colour2 } = getColorCode();
     for (let i = 0; i < segments.length/2; i++) {
       segColors.push(colour1, colour2)
     }
-    //Set the Slider to the correct Value
     setSlider();
     renderTable();
     loadOldWins();
     switchIcons();   
     setRefreshWheel(!refreshWheel); 
   };
-  function allowLogin(){
-    setAccounts(true);
-  }
   function addEntries(){
     //Get Input and clear
     var input = document.getElementById("entryInput").value;
@@ -84,15 +70,14 @@ export default function App() {
       var { colour1, colour2 } = getColorCode();
       segColors.push(colour1, colour2);
     }
+
+    //Add the new changes to the HTML and LocalStorage
     localStorage.setItem('Segments', JSON.stringify(segments));
     setLanguage();
     renderTable();
     setRefreshWheel(!refreshWheel);
   }
-  function languageChange(languageCode){
-    localStorage.setItem('Language', languageCode);
-    setLanguage();
-  }
+
   function switchIcons(){
     const userState = getUserStatus();
     if (userState) {
@@ -115,14 +100,17 @@ export default function App() {
       accountDiv.appendChild(imgElement);
     }
   }
+
   function deleteSegment(index) {
       segments.splice(index, 1); // Remove the segment at the specified index
       localStorage.setItem('Segments', JSON.stringify(segments));
       location.reload();
   }
+
   function renderTable() {
     var tableBody = document.getElementById("segmentsTable").getElementsByTagName("tbody")[0];
-    tableBody.innerHTML = ""; // Clear the existing table body
+    tableBody.innerHTML = "";
+    
     // Loop through the segments array and create rows for each segment
     for (var i = 0; i < segments.length; i++) {
       var row = document.createElement("tr");
@@ -150,7 +138,7 @@ export default function App() {
         return function() {
           deleteSegment(index);
         };
-      })(i); // Using a closure to capture the current index value
+      })(i);
       
       buttonCell.appendChild(deleteImage);
       row.appendChild(buttonCell);
@@ -158,7 +146,6 @@ export default function App() {
     }
   }
   
-
   return (
     <>
       <div id="nav">
