@@ -2,6 +2,7 @@ import translations from "./translations.json";
 import {getAuth, signOut} from "firebase/auth";
 import {db } from './firebase.js';
 import {doc, setDoc,getDoc,updateDoc  } from "firebase/firestore";
+import {changePFP} from "./accountFunctions.js"
 
 export function processInput(input) {
   const entries = input.split(",").map(entry => entry.trim());
@@ -67,7 +68,8 @@ export function getColorCode(){
   }else{
     colorCode1 = "darkred";
     colorCode2 = "saddlebrown";
-  }  
+  }   
+
   return { colour1: colorCode1, colour2: colorCode2 };
 }
 export function sliderchanged(){
@@ -92,9 +94,6 @@ export function loadoldsegments(){
   var newSegments= [];
   if(storedSegments){
     newSegments.push(...storedSegments);
-
-    // Remove entries called "Example 1" and "Example 2"
-    newSegments = newSegments.filter(segment => segment !== "Example 1" && segment !== "Example 2");
   }else{
     newSegments.push("Example 1", "Example 2");
   }  
@@ -153,7 +152,7 @@ export function loadOldWins(){
     // A User is signed in
     getAccountEntries()
       .then((retrievedEntries) => {
-        retrievedEntries.forEach((entry, index) => {
+        retrievedEntries.forEach((entry) => {
           const row = table.insertRow();
           const entryCell = row.insertCell();
           entryCell.id = "entryCell";
@@ -167,7 +166,7 @@ export function loadOldWins(){
   }else {
     if(storedEntries){
       //Fill Table
-      storedEntries.forEach((entry, index) => {
+      storedEntries.forEach((entry) => {
       const row = table.insertRow();
       const entryCell = row.insertCell();
       entryCell.id = "entryCell";
@@ -265,6 +264,7 @@ export function showProfile(){
   }
   
   const accountDiv = document.getElementById('accountDiv');
+  accountDiv.innerHTML = "";
 
   const imgElement = document.createElement('img');
   imgElement.src = "src/Images/Account/signout.png"
@@ -274,15 +274,53 @@ export function showProfile(){
   accountDiv.appendChild(imgElement);
 
   const profilePicture = document.createElement('img');
-  profilePicture.src = userState.photoURL;
+  if(userState.photoURL){
+    profilePicture.src = userState.photoURL;
+  }
+  else{
+    profilePicture.src = "src/Images/Account/default-pfp.png"
+  }
+
+  profilePicture.addEventListener('click', changePFP);
   profilePicture.id = 'pfp';
   accountDiv.appendChild(profilePicture);
 
+  var fileInput = document.createElement('input');
+  fileInput.type = "file";
+  fileInput.id = "profilePicInput";
+  fileInput.accept ="png,gif,jpg,mov"
+  profilePicture.addEventListener('click', function() {
+    fileInput.click(); // Trigger click on file input
+  });
+  accountDiv.appendChild(fileInput);
+  
   var userInfo = document.createElement('p');
   userInfo.textContent = userState.email;
-  userInfo.id ="useremail";
-  accountDiv.appendChild(userInfo)
-
-
+  userInfo.id = "useremail";
+  accountDiv.appendChild(userInfo);
+  
+  fileInput.addEventListener('change', function(event) {
+    changePFP();
+  });
+} 
+export function checkForEmptyLocalStorage(){
+  const isLocalStorageEmpty = Object.keys(localStorage).length === 0;
+  if(isLocalStorageEmpty){
+    const segments = ["Example 1", "Example 2"];
+    const currentDate = new Date();
+    const pastEntries = [
+      { content: "Example Win", date: currentDate },
+      { content: "Example Win2", date: currentDate }
+    ];
+    const colourdesign = { colour1: "darkred", colour2: "saddlebrown"};
+    localStorage.setItem('Segments', JSON.stringify(segments));
+    localStorage.setItem('PastEntries', JSON.stringify(pastEntries));
+    localStorage.setItem('ColorDesign', JSON.stringify(colourdesign));
+    localStorage.setItem('UpDuration', 300);
+    localStorage.setItem('Language', "english");
+  }
 }
+
+
+
 

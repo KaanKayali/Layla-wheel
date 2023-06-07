@@ -9,22 +9,28 @@ export async function createDocument(uid){
   await setDoc(doc(db, "users", uid), {
   });
 } 
+export async function changePFP(){
+  const auth = getAuth();
+  const user = auth.currentUser;
+  // Update user profile with picture
+  const profilePic = document.getElementById('profilePicInput').files[0];
+  // Update user profile with picture
+  const profilePicUrl = await uploadProfilePicture(profilePic, user.uid);
+  if (profilePicUrl) {
+    await updateProfile(user, { photoURL: profilePicUrl });
+    location.reload();
+  }
+}
 export async function handleSubmitRegister(event) {
   event.preventDefault();
   const email = document.getElementById('mailInput').value;
   const password = document.getElementById('passwordInput').value;
-  const profilePic = document.getElementById('profilePicInput').files[0];
   const auth = getAuth();
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       // Signed in
       const user = userCredential.user;
-      // Update user profile with picture
-      const profilePicUrl = await uploadProfilePicture(profilePic, user.uid);
-      if (profilePicUrl) {
-        await updateProfile(user, { photoURL: profilePicUrl });
-      }
       // Create a user Document
       createDocument(user.uid);
       // Closes the Popup

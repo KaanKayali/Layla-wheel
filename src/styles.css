@@ -1,5 +1,5 @@
 * {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Monospace";
   box-sizing: border-box;
   scroll-behavior:smooth;
 } 
@@ -190,6 +190,10 @@ canvas{
   padding: 2px;
   border-top-color: saddlebrown;
   border-left-color: saddlebrown;
+  cursor: pointer;
+}
+#pfp:hover {
+  transform: scale(1.25);
 }
 .accounticons{
   width: 30px;
@@ -216,6 +220,9 @@ canvas{
   margin-left: 1%;
   cursor: pointer;
 }
+#profilePicInput{
+  display: none;
+}
 
 
 /* Wheel Editor */
@@ -241,8 +248,40 @@ canvas{
 }
 tr:nth-child(even) {background-color: darkred;}
 tr:first-child {
+  background-color: black;
   font-style: italic;
   font-weight: bolder;
+}
+#segmentsDeleteDiv{
+  overflow-y: auto;
+  max-height: 150px;
+}
+#segmentsTable{
+  background-color: black;
+  border-collapse: collapse;
+  overflow-y: scroll;
+  width: 100%;
+}
+#segmentsTable td{
+  padding: 0%;
+  margin: 0%;
+}
+#imageholder{
+  background-color: transparent;
+  height: 15px;
+  width: 15px;
+  border: none;
+}
+#deleteInput{
+  float: left;
+}
+#trashcan{
+  height: 15px;
+  width: 15px;
+  margin: 10%;
+  float: right;
+  border: none;
+  cursor: pointer;
 }
 #entriescounter{
   font-size: small;
@@ -370,7 +409,7 @@ tr:first-child {
   padding: 20px;
 }
 #formRegister{
-  margin-top: 10%;
+  margin-top: 8%;
 }
 .submitBtn{
   background: orange;
@@ -383,5 +422,4 @@ tr:first-child {
   font-style: italic;
   font-weight: normal;
 }
-
 
