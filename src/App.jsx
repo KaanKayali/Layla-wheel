@@ -59,7 +59,7 @@ export default function App() {
     segments.length = 0;
     segments.push(...segmentsNew);
 
-    // Get Array lenght
+    //Get Array lenght
     var arraycount = segments.length;
     arraycount = arraycount/2;
     var i = 1;
@@ -89,7 +89,6 @@ export default function App() {
       if (element) {
         element.parentNode.removeChild(element);
       }
-      // JavaScript code to set the img element in the accountDiv
       const accountDiv = document.getElementById('accountDiv');
       const imgElement = document.createElement('img');
       imgElement.alt = 'Login/Register Button';
@@ -102,29 +101,25 @@ export default function App() {
   }
 
   function deleteSegment(index) {
-      segments.splice(index, 1); // Remove the segment at the specified index
-      localStorage.setItem('Segments', JSON.stringify(segments));
-      location.reload();
+    //Remove the segment at the specified index
+    segments.splice(index, 1);
+    localStorage.setItem('Segments', JSON.stringify(segments));
+    location.reload();
   }
 
   function renderTable() {
     var tableBody = document.getElementById("segmentsTable").getElementsByTagName("tbody")[0];
     tableBody.innerHTML = "";
-    
-    // Loop through the segments array and create rows for each segment
+
+    //Loop through the segments array and create rows for each segment
     for (var i = 0; i < segments.length; i++) {
       var row = document.createElement("tr");
-      
-      // Create a cell for the segment
       var segmentCell = document.createElement("td");
       segmentCell.id = "entryCell"
       segmentCell.innerText = segments[i];
       row.appendChild(segmentCell);
-      
-      // Create a cell for the delete button
+
       var buttonCell = document.createElement("td");
-      
-      // Create the delete button
       var deleteButton = document.createElement("button");
       var deleteImage = document.createElement("img");
       deleteImage.src = "src/Images/trash-icon.png";
@@ -132,8 +127,7 @@ export default function App() {
       deleteImage.id = "trashcan"
       deleteButton.id = "imageholder";
       deleteButton.appendChild(deleteImage);
-      
-      // Attach onclick event
+
       deleteImage.onclick = (function(index) {
         return function() {
           deleteSegment(index);

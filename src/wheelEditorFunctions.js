@@ -50,7 +50,7 @@ export function changeWheelDesign(var1, var2){
   location.reload();
 }
 export function getColorCode(){
-  // Retrieve the stored data from localStorage
+  //Retrieve the stored data from localStorage
   var storedColor = localStorage.getItem('ColorDesign');
   var colorCode1;
   var colorCode2;
@@ -78,7 +78,7 @@ export function sliderchanged(){
   location.reload();
 }
 export function setSlider(){
-  //Loads the set number from LocalStorage
+  //Loads the saved number from LocalStorage
   var range = document.getElementById("uptimeSlider");
   const x = localStorage.getItem('UpDuration');
   if(x){
@@ -89,6 +89,7 @@ export function setSlider(){
   }  
 }
 export function loadoldsegments(){
+  //Loads the saved segments from LocalStorage
   var storedSegments = JSON.parse(localStorage.getItem('Segments'));
   var newSegments= [];
   if(storedSegments){
@@ -99,6 +100,7 @@ export function loadoldsegments(){
   return newSegments;
 }
 export function languageChange(languageCode){
+  //Sets the selected Language in LocalStorage
   localStorage.setItem('Language', languageCode);
   setLanguage();
 }
@@ -116,7 +118,7 @@ export function setLanguage(){
   const element4 = document.getElementById("segmentsCounter");
   //Uptime Text
   const element5 = document.getElementById("UptimeID");
-  //Uptime Text
+  //Design Text
   const element6 = document.getElementById("DesignText");
 
   element1.innerHTML = translations[languageCode].lastPicks;
@@ -135,16 +137,14 @@ export function setLanguage(){
 
   //Marks the Selected Language
   const selectedLanguage = document.getElementById(languageCode);
-
   selectedLanguage.style.border = '3px solid orange';
-
 }
 export function loadOldWins(){
   const storedEntries = JSON.parse(localStorage.getItem('PastEntries'));
   const table = document.getElementById('pastResults');
   table.innerHTML = "";
 
-  //Insert Header
+  //Insert constant Header
   const row = table.insertRow();
   const HeadCell = row.insertCell();
   HeadCell.id = "headCell";
@@ -152,7 +152,7 @@ export function loadOldWins(){
 
   const userState = getUserStatus();
   if (userState) {
-    // A User is signed in
+    //A User is signed in
     getAccountEntries()
       .then((retrievedEntries) => {
         retrievedEntries.forEach((entry) => {
@@ -186,25 +186,21 @@ export function loadOldWins(){
 export function addEntryForLocalSave(content) {
   const userState = getUserStatus();
   if (userState) {
-    // A User is signed in
+    //A User is signed in
     addEntryToDatabase(content);
   }else {
-    //Adds the Entry to the Array
+    //Adds the Entry to LocalStorage
     const currentDate = new Date();
     var storedEntries = JSON.parse(localStorage.getItem('PastEntries'));
     const entry = { content: content, date: currentDate };
 
-    
+    //If the array has more than 5 entries, remove the oldest one
     if(storedEntries){
-      // If the array has more than 5 entries, remove the oldest one
       if (storedEntries.length >= 5) {
         storedEntries.shift();
       }
     }
     storedEntries.push(entry);
-    console.log(storedEntries);
-
-    //Push the Entries Array into local Storage
     localStorage.setItem('PastEntries', JSON.stringify(storedEntries));
   }
 
@@ -220,17 +216,17 @@ export async function addEntryToDatabase(newEntry){
   const userState = getUserStatus();
   const currentDate = new Date();
 
-  // Retrieve the user's document from Firestore
+  //Retrieve the user's document from Firestore
   const userDocRef = doc(db, "users", userState.uid);
   const userDocSnapshot = await getDoc(userDocRef);
   if (userDocSnapshot.exists()) {
     const userData = userDocSnapshot.data();
-    const RetrievedEntries = userData.SavedEntries || []; // Retrieve the 'SavedEntires' field or set it as an empty array if it doesn't exist
+    const RetrievedEntries = userData.SavedEntries || [];
     const entry = { Entry: newEntry, date: currentDate };
 
     RetrievedEntries.push(entry);
 
-    // Update the 'Savedentries' field in Firestore
+    //Update the 'Savedentries' field in Firestore
     await updateDoc(userDocRef, { SavedEntries: RetrievedEntries});
   }
 }
@@ -238,13 +234,12 @@ export async function getAccountEntries(){
   const userState = await getUserStatus(); 
   var RetrievedEntries = [];
 
-  // Retrieve the user's document from Firestore
+  //Retrieve the user's document from Firestore
   const userDocRef = doc(db, "users", userState.uid);
   const userDocSnapshot = await getDoc(userDocRef);
-
   if (userDocSnapshot.exists()) {
     const userData = userDocSnapshot.data();
-    RetrievedEntries = userData.SavedEntries || []; // Retrieve the 'SavedEntries' field or set it as an empty array if it doesn't exist    
+    RetrievedEntries = userData.SavedEntries || [];
   }
   return RetrievedEntries;
 }
@@ -252,7 +247,6 @@ export function fireBaseLogOut(){
   const auth = getAuth();
   signOut(auth)
     .then(() => {
-      console.log('User logged out successfully.');
       location.reload();
     })
     .catch((error) => {
@@ -266,6 +260,7 @@ export function showProfile(){
     element.parentNode.removeChild(element);
   }
   
+  //Creates all required Account elements 
   const accountDiv = document.getElementById('accountDiv');
   accountDiv.innerHTML = "";
 
@@ -293,7 +288,7 @@ export function showProfile(){
   fileInput.id = "profilePicInput";
   fileInput.accept ="png,gif,jpg,mov"
   profilePicture.addEventListener('click', function() {
-    fileInput.click(); // Trigger click on file input
+    fileInput.click();
   });
   accountDiv.appendChild(fileInput);
   
@@ -307,6 +302,7 @@ export function showProfile(){
   });
 } 
 export function checkForEmptyLocalStorage(){
+  //When there is an Empty LocalStorage all fields are set with the default.
   const isLocalStorageEmpty = Object.keys(localStorage).length === 0;
   if(isLocalStorageEmpty){
     const segments = ["Example 1", "Example 2"];
