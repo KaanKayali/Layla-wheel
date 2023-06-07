@@ -127,13 +127,10 @@ body {
   margin: 0 auto;
 }
 .btn {
-  background: darkgray;
-  border: 1px solid rgb(72, 70, 70);
-  color: hsl(0, 3%, 17%);
+  background: orange;
   padding: 0.25em 0.5em;
-  border-radius: 0.25em;
-  outline: none;
   cursor: pointer;
+  border: 1px solid black;
 }
 header{
   display:flex;
@@ -227,7 +224,10 @@ canvas{
 
 /* Wheel Editor */
 #entrylistForm{
-  width: 150px;
+  width: 100%;
+}
+#entryInput{
+  width: 100%;
 }
 .InputDiv{
   border-color: black;

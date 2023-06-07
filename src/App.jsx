@@ -45,17 +45,18 @@ export default function App() {
     //Load old Segments or load examples
     var newsegments = loadoldsegments();
     segments.push(...newsegments);
-    loadOldWins();
     //Put the right color in the array
     segColors.length = 0;
     var { colour1, colour2 } = getColorCode();
     for (let i = 0; i < segments.length/2; i++) {
       segColors.push(colour1, colour2)
     }
+    //Set the Slider to the correct Value
     setSlider();
-    setRefreshWheel(!refreshWheel);
     renderTable();
-    switchIcons();
+    loadOldWins();
+    switchIcons();   
+    setRefreshWheel(!refreshWheel); 
   };
   function allowLogin(){
     setAccounts(true);

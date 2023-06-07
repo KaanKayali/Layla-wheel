@@ -133,7 +133,7 @@ export function setLanguage(){
   //Marks the Selected Language
   const selectedLanguage = document.getElementById(languageCode);
 
-  selectedLanguage.style.border = '2px solid orange';
+  selectedLanguage.style.border = '3px solid orange';
 
 }
 export function loadOldWins(){
