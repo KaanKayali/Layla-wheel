@@ -5,34 +5,37 @@ import {setDoc, doc} from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, } from 'firebase/storage';
 
 export async function createDocument(uid){
-  // Add a new document in collection "users"
+  //Add a new document in collection "users"
   await setDoc(doc(db, "users", uid), {
   });
 } 
+export async function changePFP(){
+  //Updates the user profile with the new Picture
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const profilePic = document.getElementById('profilePicInput').files[0];
+  const profilePicUrl = await uploadProfilePicture(profilePic);
+  if (profilePicUrl) {
+    await updateProfile(user, { photoURL: profilePicUrl });
+    location.reload();
+  }
+}
 export async function handleSubmitRegister(event) {
   event.preventDefault();
   const email = document.getElementById('mailInput').value;
   const password = document.getElementById('passwordInput').value;
-  const profilePic = document.getElementById('profilePicInput').files[0];
   const auth = getAuth();
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
-      // Signed in
+      //Signed in
       const user = userCredential.user;
-      // Update user profile with picture
-      const profilePicUrl = await uploadProfilePicture(profilePic, user.uid);
-      if (profilePicUrl) {
-        await updateProfile(user, { photoURL: profilePicUrl });
-      }
-      // Create a user Document
       createDocument(user.uid);
-      // Closes the Popup
       document.getElementById("closePopUpBtn").click();
     })
     .catch((error) => {
       const errorCode = error.code;
-      alert(errorCode + "Error code");
+      alert(errorCode);
     });
 }
 export async function handleSubmitLogin(event) {
@@ -43,9 +46,8 @@ export async function handleSubmitLogin(event) {
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in 
+      //Signed in 
       const user = userCredential.user;
-      //Closes the Popup
       document.getElementById("closePopUpBtn").click();
     })
     .catch((error) => {
@@ -76,14 +78,12 @@ export function setLanguageAccount() {
     element5.value = translations[languageCode].submitBtnRegister;
     element6.value = translations[languageCode].submitBtnLogin;
 }
-async function uploadProfilePicture(profilePic, userid) {
-  // Create a reference to the storage bucket where you want to upload the picture
+async function uploadProfilePicture(profilePic) {
+  //Upload the picture file to the storage bucket
   var downloadURLFinal = "";
   const storage = getStorage();
   var imageSource = "profilePictures/"+profilePic.name;
   const storageRef = ref(storage, imageSource);
-  // Upload the picture file to the storage bucket
-  //const snapshot = uploadBytes(storageRef, profilePic);
 
   await uploadBytes(storageRef, profilePic)
     .then(snapshot => {
@@ -92,6 +92,6 @@ async function uploadProfilePicture(profilePic, userid) {
     .then(downloadURL => {
       downloadURLFinal = downloadURL;
     })
-  // Return the download URL
+
   return downloadURLFinal;
 }

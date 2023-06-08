@@ -1,5 +1,5 @@
 * {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Monospace";
   box-sizing: border-box;
   scroll-behavior:smooth;
 } 
@@ -144,13 +144,10 @@ body {
   margin: 0 auto;
 }
 .btn {
-  background: darkgray;
-  border: 1px solid rgb(72, 70, 70);
-  color: hsl(0, 3%, 17%);
+  background: orange;
   padding: 0.25em 0.5em;
-  border-radius: 0.25em;
-  outline: none;
   cursor: pointer;
+  border: 1px solid black;
 }
 header{
   display:flex;
@@ -207,6 +204,10 @@ canvas{
   padding: 2px;
   border-top-color: saddlebrown;
   border-left-color: saddlebrown;
+  cursor: pointer;
+}
+#pfp:hover {
+  transform: scale(1.25);
 }
 
 #accountDiv{
@@ -230,11 +231,17 @@ canvas{
   margin-left: 1%;
   cursor: pointer;
 }
+#profilePicInput{
+  display: none;
+}
 
 
 /* Wheel Editor */
 #entrylistForm{
-  width: 150px;
+  width: 100%;
+}
+#entryInput{
+  width: 100%;
 }
 .InputDiv{
   border-color: black;
@@ -255,8 +262,40 @@ canvas{
 }
 tr:nth-child(even) {background-color: darkred;}
 tr:first-child {
+  background-color: black;
   font-style: italic;
   font-weight: bolder;
+}
+#segmentsDeleteDiv{
+  overflow-y: auto;
+  max-height: 150px;
+}
+#segmentsTable{
+  background-color: black;
+  border-collapse: collapse;
+  overflow-y: scroll;
+  width: 100%;
+}
+#segmentsTable td{
+  padding: 0%;
+  margin: 0%;
+}
+#imageholder{
+  background-color: transparent;
+  height: 15px;
+  width: 15px;
+  border: none;
+}
+#deleteInput{
+  float: left;
+}
+#trashcan{
+  height: 15px;
+  width: 15px;
+  margin: 10%;
+  float: right;
+  border: none;
+  cursor: pointer;
 }
 #entriescounter{
   font-size: small;
@@ -380,7 +419,7 @@ tr:first-child {
 }
 
 #formRegister{
-  margin-top: 10%;
+  margin-top: 8%;
 }
 .submitBtn{
   background: orange;
@@ -393,5 +432,4 @@ tr:first-child {
   font-style: italic;
   font-weight: normal;
 }
-
 

@@ -1,11 +1,10 @@
 import "./styles.css";
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import WheelComponent from "react-wheel-of-prizes";
 import ShowWinner from "./winner.jsx";
-import { getAuth, signOut } from "firebase/auth";
 import Account from "./LoginRegister.jsx";
-
-import {loadOldWins,showProfile,fireBaseLogOut,getUserStatus,setLanguage,addEntryForLocalSave,changeWheelDesign,getColorCode,sliderchanged,processInput,setSlider,loadoldsegments} from "./wheelEditorFunctions.js";
+import {auth } from './firebase.js';
+import {loadOldWins,languageChange,checkForEmptyLocalStorage,showProfile,getUserStatus,setLanguage,addEntryForLocalSave,changeWheelDesign,getColorCode,sliderchanged,processInput,setSlider,loadoldsegments} from "./wheelEditorFunctions.js";
 
 const segments = [];
 const segColors = ["saddlebrown", "darkred"];
@@ -14,40 +13,40 @@ export default function App() {
   const [Accounts, setAccounts] = useState(false);
   const [winnerName, setWinnerName] = useState('');
   const [refreshWheel, setRefreshWheel] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const onFinished = (winner) => {
-    addEntryForLocalSave(winner)
-    setWinnerName(winner);
-    setShowWinner(true);
-  };
-  const closeWinnerPopup = () => {
-    setShowWinner(false);
-  };
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+      switchIcons();
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-  const closeAccountsPopup  = () => {
-    setAccounts(false);
-    switchIcons();
-    loadOldWins();
-  };
+  //Bunch of small Functions to set the Popups
+  const onFinished = (winner) => { addEntryForLocalSave(winner); setWinnerName(winner); setShowWinner(true);};
+  const closeWinnerPopup = () => { setShowWinner(false);};
+  const closeAccountsPopup  = () => { setAccounts(false); switchIcons();};
+  function allowLogin(){ setAccounts(true); }
+
   window.onload = function() { 
-    //Load old Segments or load examples
+    //Make sure everything is loading correctly with Localstorage
+    checkForEmptyLocalStorage();
     var newsegments = loadoldsegments();
     segments.push(...newsegments);
-    loadOldWins();
-    //Put the right color in the array
     segColors.length = 0;
     var { colour1, colour2 } = getColorCode();
     for (let i = 0; i < segments.length/2; i++) {
       segColors.push(colour1, colour2)
     }
     setSlider();
-    switchIcons();
-    setRefreshWheel(!refreshWheel);
-    
+    renderTable();
+    loadOldWins();
+    switchIcons();   
+    setRefreshWheel(!refreshWheel); 
   };
-  function allowLogin(){
-    setAccounts(true);
-  }
   function addEntries(){
     //Get Input and clear
     var input = document.getElementById("entryInput").value;
@@ -60,7 +59,7 @@ export default function App() {
     segments.length = 0;
     segments.push(...segmentsNew);
 
-    // Get Array lenght
+    //Get Array lenght
     var arraycount = segments.length;
     arraycount = arraycount/2;
     var i = 1;
@@ -71,45 +70,25 @@ export default function App() {
       var { colour1, colour2 } = getColorCode();
       segColors.push(colour1, colour2);
     }
+
+    //Add the new changes to the HTML and LocalStorage
     localStorage.setItem('Segments', JSON.stringify(segments));
     setLanguage();
+    renderTable();
     setRefreshWheel(!refreshWheel);
   }
 
-  function removeEntryFromArray(){
-    const form = document.getElementById("delinput");
-    const segmentName = form.value;
-    
-    // Find the index of the segment to delete
-    const indexToDelete = segments.findIndex(segment => segment === segmentName);
-    if (segments.length > 1){
-      // Delete the segment at the found index
-      if (indexToDelete !== -1) {
-        segments.splice(indexToDelete, 1);
-      }
-    }
-    else{
-      setLanguage();
-    }
-    localStorage.setItem('Segments', JSON.stringify(segments));
-    document.getElementById("delinput").value = "";
-    setRefreshWheel(!refreshWheel);
-  }
-  function languageChange(languageCode){
-    localStorage.setItem('Language', languageCode);
-    setLanguage();
-  }
   function switchIcons(){
     const userState = getUserStatus();
     if (userState) {
       showProfile();
+      loadOldWins();
     }else{
       //Delete the AccountIcon if it exists
       var element = document.getElementById("AccountIcon");
       if (element) {
         element.parentNode.removeChild(element);
       }
-      // JavaScript code to set the img element in the accountDiv
       const accountDiv = document.getElementById('accountDiv');
       const imgElement = document.createElement('img');
       imgElement.alt = 'Login/Register Button';
@@ -120,8 +99,47 @@ export default function App() {
       accountDiv.appendChild(imgElement);
     }
   }
-  
 
+  function deleteSegment(index) {
+    //Remove the segment at the specified index
+    segments.splice(index, 1);
+    localStorage.setItem('Segments', JSON.stringify(segments));
+    location.reload();
+  }
+
+  function renderTable() {
+    var tableBody = document.getElementById("segmentsTable").getElementsByTagName("tbody")[0];
+    tableBody.innerHTML = "";
+
+    //Loop through the segments array and create rows for each segment
+    for (var i = 0; i < segments.length; i++) {
+      var row = document.createElement("tr");
+      var segmentCell = document.createElement("td");
+      segmentCell.id = "entryCell"
+      segmentCell.innerText = segments[i];
+      row.appendChild(segmentCell);
+
+      var buttonCell = document.createElement("td");
+      var deleteButton = document.createElement("button");
+      var deleteImage = document.createElement("img");
+      deleteImage.src = "src/Images/trash-icon.png";
+      deleteImage.alt = "Delete";
+      deleteImage.id = "trashcan"
+      deleteButton.id = "imageholder";
+      deleteButton.appendChild(deleteImage);
+
+      deleteImage.onclick = (function(index) {
+        return function() {
+          deleteSegment(index);
+        };
+      })(i);
+      
+      buttonCell.appendChild(deleteImage);
+      row.appendChild(buttonCell);
+      tableBody.appendChild(row);
+    }
+  }
+  
   return (
     <>
       <div id="nav">
@@ -153,7 +171,7 @@ export default function App() {
       
     <div class="float-child">
         <div className="App">
-          <div>
+          <div id="wheeldiv">
             {/*Wheel*/}
             <WheelComponent
               segments={segments}
@@ -161,7 +179,7 @@ export default function App() {
               onFinished={(winner) => onFinished(winner)}
               primaryColor="black"
               contrastColor="white"
-              buttonText="Layla"
+              buttonText="SpinMania"
               isOnlyOnce={false}
               size={190}
               upDuration={localStorage.getItem('UpDuration') / segments.length}
@@ -185,8 +203,7 @@ export default function App() {
                   <th>Date</th>
                 </tr>
               </thead>
-              <tbody>
-              </tbody>
+              <tbody></tbody>
             </table>
           </div>
           
@@ -198,8 +215,17 @@ export default function App() {
             <p id="segmentsCounter"></p><br/>
 
             {/* Delete Segments */}
-            <input type="text" id="delinput" className="entryInput"></input> <br />
-            <button className="btn" onClick={removeEntryFromArray} id="deleteInput">Remove Entry</button><br/><br/>
+            <div id="segmentsDeleteDiv">
+              <table id="segmentsTable">
+                <thead>
+                  <tr>
+                    <th id="deleteInput">Segment</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
 
             {/* Range */}
             <p id="UptimeID"></p>
