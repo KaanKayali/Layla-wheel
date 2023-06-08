@@ -3,7 +3,18 @@ Layla-wheel is a website created with React. It allows you to make decisions wit
 It saves your items in your localstorage so you get your entered data back.
 
 ## How it works
-On the rightside of the Website you can see a table with the last picks from the wheel. There are none when its the first time spinning. You can add textboxes with the "+" to enter more items. By pressing "Add Entries" the data will import to the wheel which you can spin by clicking on it. The winner will be stored in the "Last picked" List.
+General:
+In case you are unfamiliar with the current language, there is a selection between 6 different languages on the top of the Site.
+There is a Login Icon on the Top Right. If you don't have an account yet, you can register and log in. The advantage lies in the top right table which no longer stores only the first 5 but all the last winners. Additionally, the profile picture can be changed by clicking on it at the top left. 
+
+
+
+The Wheel Editor:
+- By clicking on the button "Add all Entries", all words separated by a comma in the upper text box are newly entered into the wheel.
+- All wheel segments are listed in a table on the right, there you can also click on the trash Icon to remove the segment entirely.
+- The duration of the wheel can be determined directly below under "Spin Duration".
+- If you don't like the colour scheme of the wheel, you can change it on the bottom right.
+
 
 ```
 npm i @firebase/storage
