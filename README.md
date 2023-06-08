@@ -4,3 +4,18 @@ It saves your items in your localstorage so you get your entered data back.
 
 ## How it works
 On the rightside of the Website you can see a table with the last picks from the wheel. There are none when its the first time spinning. You can add textboxes with the "+" to enter more items. By pressing "Add Entries" the data will import to the wheel which you can spin by clicking on it. The winner will be stored in the "Last picked" List.
+
+```
+npm i @firebase/storage
+
+npm install -g firebase-tools
+
+npm install firebase
+
+npm install react-script
+
+npm install react-wheel-of-prizes
+
+npm install wheel-of-prizes
+```
+
